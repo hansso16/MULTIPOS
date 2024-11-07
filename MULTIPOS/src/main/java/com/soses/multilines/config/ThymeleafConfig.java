@@ -4,6 +4,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
+import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
@@ -36,6 +37,7 @@ public class ThymeleafConfig {
     SpringTemplateEngine templateEngine(MessageSource messageSource) {
 	    final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 	    templateEngine.setTemplateResolver(templateResolver());
+	    templateEngine.addDialect(new SpringSecurityDialect());
 	    templateEngine.setMessageSource(messageSource);
 	    return templateEngine;
 	}

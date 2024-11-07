@@ -2,7 +2,9 @@ package com.soses.multilines.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,8 +26,15 @@ public class SecurityConfig {
             .authorizeHttpRequests(requests -> requests
 	            .requestMatchers("/favicon.ico").permitAll()
 	            .requestMatchers("/css/public/**").permitAll()
-	            .requestMatchers("/js/public/**").permitAll())
-            .formLogin(login -> login.loginPage("/login").permitAll())
+	            .requestMatchers("/js/public/**").permitAll()
+	            .requestMatchers("/").authenticated()
+	            .anyRequest().authenticated()
+            )
+            .formLogin(login -> login
+        		.loginPage("/login")
+        		.permitAll()
+        		.defaultSuccessUrl("/", true)
+    		)
             .logout(logout -> logout.permitAll());
 
         //http.authorizeHttpRequests(requests -> requests.anyRequest().authenticated());
@@ -35,14 +44,19 @@ public class SecurityConfig {
 //        	http.authorizeHttpRequests().antMatchers(matcher.getPath()).access(matcher.getRoleInfo());
 //        }
         
-        http
-	        .authorizeHttpRequests(requests -> requests
+//        http
+//	        .authorizeHttpRequests(requests -> requests
 //                .requestMatchers("/admin/**").hasRole("ADMIN")
 //                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                .anyRequest().authenticated())
-        ;
+//                .anyRequest().authenticated())
+//        ;
 
         return http.build();
+    }
+    
+    @Bean
+    AuthenticationManager authManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
     
     @Bean

@@ -1,16 +1,16 @@
 package com.soses.multilines.auth;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.soses.hris.common.GeneralUtil;
+import com.soses.multilines.entity.Privilege;
+import com.soses.multilines.entity.Role;
 import com.soses.multilines.entity.User;
 
 public class UserDetailsImp implements UserDetails {
@@ -23,7 +23,8 @@ public class UserDetailsImp implements UserDetails {
 	private String password;
 	private boolean isEnabled;
 	private LocalDate terminationDate;
-	private List<Role> roles;
+	private Set<Role> roleSet;
+	private Set<Privilege> privilegeSet;
 
 	public UserDetailsImp() { }
 	
@@ -31,23 +32,34 @@ public class UserDetailsImp implements UserDetails {
 		this.username = user.getUsername();
 		this.password = user.getPassword();
 		this.terminationDate = user.getTerminationDate();
-		if(terminationDate != null && terminationDate.isBefore(java.time.LocalDate.now())) {
-			this.isEnabled = false;
-		} else { 
-			this.isEnabled = true;
-		}
-		this.roles = Arrays.asList(user.getRole());
+		this.roleSet = user.getRoleSet();
+		this.privilegeSet = user.getPrivileges();
 	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
-		List<GrantedAuthority> authorities = new ArrayList<>();
-    	if (!GeneralUtil.isListEmpty(roles)) {
-            for (Role role: roles) {
-            	authorities.add(new SimpleGrantedAuthority(role.getFullRoleCode()));
-            }
-        }
+		Set<GrantedAuthority> authorities = new HashSet<>();
+		
+		if (!roleSet.isEmpty()) {
+			for (Role role : roleSet) {
+				authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+			}
+		}
+		
+		if (!privilegeSet.isEmpty()) {
+			for (Privilege privilege : privilegeSet) {
+				authorities.add(new SimpleGrantedAuthority(privilege.getPrivilegeName()));
+			}
+		}
+		
+//		List<GrantedAuthority> authorities = new ArrayList<>();
+//    	if (roleSet != null && !roleSet.isEmpty()) {
+//            for (Role role: roleSet) {
+//            	authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+//            }
+//        }
+		
         return authorities;
 	}
 
@@ -83,7 +95,11 @@ public class UserDetailsImp implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
+		if(terminationDate != null && terminationDate.isBefore(java.time.LocalDate.now())) {
+			this.isEnabled = false;
+		} else { 
+			this.isEnabled = true;
+		}
 		return isEnabled;
 	}
 	

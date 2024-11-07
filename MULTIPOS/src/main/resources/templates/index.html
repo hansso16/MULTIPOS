@@ -1,38 +1,33 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
     	<th:block th:replace="~{template :: headfiles}"></th:block>
 	</head >
 	<body>
+		<th:block th:replace="~{template :: menu}"></th:block>
+		<br>
 		<div class="container">
-	        <div class="row">
-	            <div class="col-md-4 offset-md-4">
-	                <div class="login-form bg-light mt-4 p-4">
-	                    <form action="#" th:action="@{/login}" method="POST" class="row g-3">
-	                        <h4>PROS Marketing - Multilines</h4>
-	                        <div th:if="${param.error}" class="col-12 error" style="color:red">
-	                            Invalid username and/or password.
-	                        </div>
-	                        <div th:if="${param.logout}" class="col-12">
-	                            <em>You have successfully logged out.</em>
-	                        </div>
-	                        <div class="col-12">
-	                            <label>Username</label>
-	                            <input type="text" name="username" class="form-control" placeholder="Username" required>
-	                        </div>
-	                        <div class="col-12">
-	                            <label>Password</label>
-	                            <input type="password" name="password" class="form-control" placeholder="Password" required>
-	                        </div>
-	                        <div class="col-12">
-	                            <button type="submit" class="btn btn-dark float-end">Login</button>
-	                        </div>
-	                    </form>
-	                </div>
-	            </div>
-	        </div>
+			<div sec:authorize="isAuthenticated()">
+		        <h1>1isAuthenticated()</h1>
+			</div>
+			<div sec:authorize="isAnonymous()">
+		        <h1>2isAnonymous()</h1>
+			</div>
+	        
+	        <h1 sec:authorize="hasRole('ROLE_ADMIN')" th:text="'3ROLE_ADMIN THYMELEAF'">3ROLE_ADMIN</h1>
+	        <h1 sec:authorize="hasRole('ROLE_USER')">3.5ROLE_USER</h1>
+	        <h1 sec:authorize="hasAuthority('READ_CONTACT_PRIVILEGE')">4READ_CONTACT_PRIVILEGE</h1>
+	        <h1 sec:authorize="hasRole('ROLE_ADMIN') AND hasAuthority('READ_CONTACT_PRIVILEGE')">5ROLE_ADMIN AND READ_CONTACT_PRIVILEGE</h1>
+	        <h1 sec:authorize="hasRole('ROLE_ADMIN') OR hasAuthority('READ_CONTACT_PRIVILEGE')">6ROLE_ADMIN OR READ_CONTACT_PRIVILEGE</h1>
+	        <h1 sec:authorize="hasRole('ROLE_USER') AND hasAuthority('READ_CONTACT_PRIVILEGE')">7ROLE_USER AND READ_CONTACT_PRIVILEGE</h1>
+	        <h1 sec:authorize="hasRole('ROLE_ADMIN') AND hasAuthority('WRITE_CONTACT_PRIVILEGE')">8ROLE_ADMIN AND WRITE_CONTACT_PRIVILEGE</h1>
+	        <h1 sec:authorize="hasRole('ROLE_USER') OR hasAuthority('READ_CONTACT_PRIVILEGE')">9ROLE_USER OR READ_CONTACT_PRIVILEGE</h1>
+	        <h1 sec:authorize="hasRole('ROLE_ADMIN') OR hasAuthority('WRITE_CONTACT_PRIVILEGE')">10ROLE_ADMIN OR WRITE_CONTACT_PRIVILEGE</h1>
+	        <h1></h1>
+	        <h1></h1>
 	    </div>
 	    
-	    <footer th:replace="~{template :: footer}"></footer >
+	    <th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
 	</body>
-</html >
+</HTML >
