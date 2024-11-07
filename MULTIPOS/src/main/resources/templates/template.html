@@ -21,20 +21,17 @@
 			    	</button>
 			    	
 				    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-				     	<ul class="navbar-nav me-auto mb-2 mb-lg-0" sec:authorize="hasRole('ROLE_STAFF')">
-					        <!--<li class="nav-item">
-					         	<a class="nav-link active" aria-current="page" href="#" th:href="@{/}">Home</a>
-					        </li>-->
-					        <li class="nav-item dropdown">
+				     	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					        <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_CONTACTS')">
 					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					            	Employee
+					            	Contacts
 					         	</a>
 					  			<ul class="dropdown-menu" aria-labelledby="employeeDropdown">
-						            <li><a class="dropdown-item" href="#" th:href="@{/employee}">Search Employee</a></li>
-						            <li><a class="dropdown-item" href="#" th:href="@{/employee/add}">Add Employee</a></li>
-						            <!--<li><a class="dropdown-item" href="#">Another action</a></li>
+						            <li><a class="dropdown-item" href="#" th:href="@{/}">All Contacts</a></li>
 						            <li><hr class="dropdown-divider"></li>
-						            <li><a class="dropdown-item" href="#">Something else here</a></li>-->
+						            <li><a class="dropdown-item" href="#" th:href="@{/}">Customers</a></li>
+						            <li><a class="dropdown-item" href="#" th:href="@{/}">Suppliers</a></li>
+						            <li><a class="dropdown-item" href="#" th:href="@{/}">Employees</a></li>
 					        	</ul>
 					        </li>
 					        <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_SUPV')">
