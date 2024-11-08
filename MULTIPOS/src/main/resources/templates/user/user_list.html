@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{template :: headfiles}"></th:block>
+		<title>Search User</title>
+	</head>
+	<body>
+		<th:block th:replace="~{template :: menu}"></th:block>
+		<br>
+		<div class="container-fluid" >
+			<div class="d-flex justify-content-center">
+				<form class="d-inline-flex" action="#" th:action="@{/user}" method="GET" >
+					<div class="input-group">
+			      		<div class="form-outline">
+			      			<input class="form-control rounded" type="search" placeholder="Search by Username" name="username" th:value="${username}" aria-label="Search" autocomplete="off" >
+			      		</div>
+			      		<button class="btn btn-outline-primary" type="submit">Search</button >
+			      	</div>
+		      	</form>
+			</div>
+			<table class="table table-striped table-hover" th:if="${users.size() > 0}">
+				<thead>
+					<tr>
+						<th scope="col">Username</th >
+						<th scope="col">First Name</th >
+						<th scope="col">Last Name</th >
+						<th scope="col">Termination Date</th >
+					</tr>
+				</thead>
+				<tbody th:if="${users != null}">
+					<tr th:each="user : ${users}">
+						<td><a href="#" th:href="@{/user/}+ ${user.username}" th:text="${user.username}"></a ></td>
+						<td th:text="${user.lastName}"></td>
+						<td th:text="${user.firstName}"></td>
+						<td th:text="${user.terminationDate}"></td>
+					</tr >
+				</tbody >
+			</table>
+			<!-- <th:block th:replace="~{template :: pagination(searchName='username', searchValue=${username})}"></th:block> -->
+		</div>
+		<th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
+	</body>
+</HTML >

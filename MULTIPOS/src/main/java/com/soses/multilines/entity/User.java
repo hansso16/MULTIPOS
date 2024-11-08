@@ -55,12 +55,15 @@ public class User implements Serializable {
 	@Column(name="USER_CODE", length=10)
 	private String userCode;
 
-	@Column(length=20)
+	@Column(name="USERNAME", length=20)
 	private String username;
 	
-//	@ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-//    private Role role;
+	@Column(name="LAST_NAME", length=20)
+	private String lastName;
+	
+	@Column(name="FIRST_NAME", length=50)
+	private String firstName;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	        name = "user_role",
@@ -149,6 +152,22 @@ public class User implements Serializable {
 
 	public void setPrivileges(Set<Privilege> privileges) {
 		this.privileges = privileges;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 }

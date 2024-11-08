@@ -34,6 +34,11 @@ public class UserDetailsImp implements UserDetails {
 		this.terminationDate = user.getTerminationDate();
 		this.roleSet = user.getRoleSet();
 		this.privilegeSet = user.getPrivileges();
+		if(terminationDate != null && terminationDate.isBefore(java.time.LocalDate.now())) {
+			this.isEnabled = false;
+		} else { 
+			this.isEnabled = true;
+		}
 	}
 	
 	@Override
@@ -95,11 +100,6 @@ public class UserDetailsImp implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		if(terminationDate != null && terminationDate.isBefore(java.time.LocalDate.now())) {
-			this.isEnabled = false;
-		} else { 
-			this.isEnabled = true;
-		}
 		return isEnabled;
 	}
 	

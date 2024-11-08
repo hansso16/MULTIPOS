@@ -22,6 +22,17 @@
 			    	
 				    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 				     	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					        <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					            	Parameters
+					         	</a>
+					  			<ul class="dropdown-menu" aria-labelledby="employeeDropdown">
+						            <li><a class="dropdown-item" href="#" th:href="@{/}">Unit of Measurement</a></li>
+						            <li><a class="dropdown-item" href="#" th:href="@{/}">Category</a></li>
+						            <li><a class="dropdown-item" href="#" th:href="@{/}">Bank</a></li>
+						            <li><a class="dropdown-item" href="#" th:href="@{/}">Stock Location</a></li>
+					        	</ul>
+					        </li>
 					        <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_CONTACTS')">
 					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					            	Contacts
@@ -34,13 +45,13 @@
 						            <li><a class="dropdown-item" href="#" th:href="@{/}">Employees</a></li>
 					        	</ul>
 					        </li>
-					        <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_SUPV')">
+					        <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN')">
 					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					            	User Management
 					         	</a>
-					  			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMgmtDropdown">
+					  			<ul class="dropdown-menu" aria-labelledby="userMgmtDropdown">
 						            <li><a class="dropdown-item" href="#" th:href="@{/user}">Search Users (view and edit roles)</a></li>
-						            <!--<li><a class="dropdown-item" href="#" th:href="@{#}">Add User</a></li>-->
+						            <li><a class="dropdown-item" href="#" th:href="@{#}">Add User</a></li>
 					        	</ul>
 					        </li>
 				     	</ul>
