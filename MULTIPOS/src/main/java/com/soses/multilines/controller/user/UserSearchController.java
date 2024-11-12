@@ -59,14 +59,15 @@ public class UserSearchController extends BaseSearchController {
 		
 		String username = userReq.getUsername();
 		Page<User> userPage = userSearchService.search(userReq);
-		if (userPage != null && userPage.hasContent()) {
+		if (userPage != null) {
 			setPaginationVariables(userPage, model);
 			model.addAttribute("username", username);
-			model.addAttribute("users", userPage.getContent());
-		} else {
-			model.addAttribute(MessageConstants.MESSAGE, MessageConstants.MESSAGE_NO_USER_FOUND);
-		}
-		
+			if (userPage.hasContent()) {
+				model.addAttribute("users", userPage.getContent());
+			} else {
+				model.addAttribute(MessageConstants.MESSAGE, MessageConstants.MESSAGE_NO_USER_FOUND);
+			}
+		}		
 		return ViewConstants.USER_LIST;
 	}
 }

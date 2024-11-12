@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -44,6 +47,9 @@ public class Role implements Serializable {
 	@Column(name="ROLE_NAME", length=20)
 	private String roleName;
 
+	@Column(name="SHORT_NAME", length=20)
+	private String shortName;
+
 	@Temporal(TemporalType.DATE)
 	@Column(name="START_DATE")
 	private LocalDate startLocalDate;
@@ -55,6 +61,10 @@ public class Role implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "USER_ID")
     )
     private Set<User> userSet = new HashSet<>();
+	
+	@OneToMany
+	@JoinColumn(name="ROLE_ID")
+	private SortedSet<Privilege> privilegeSet = new TreeSet<>();
 
 	public Role() {
 	}
@@ -105,6 +115,22 @@ public class Role implements Serializable {
 
 	public void setUserSet(Set<User> userSet) {
 		this.userSet = userSet;
+	}
+
+	public SortedSet<Privilege> getPrivilegeSet() {
+		return privilegeSet;
+	}
+
+	public void setPrivilegeSet(SortedSet<Privilege> privilegeSet) {
+		this.privilegeSet = privilegeSet;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 
 }

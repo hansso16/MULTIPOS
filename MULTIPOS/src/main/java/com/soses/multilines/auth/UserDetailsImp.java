@@ -13,21 +13,45 @@ import com.soses.multilines.entity.Privilege;
 import com.soses.multilines.entity.Role;
 import com.soses.multilines.entity.User;
 
+/**
+ * The Class UserDetailsImp.
+ *
+ * @author hso
+ * @since Nov 12, 2024
+ */
 public class UserDetailsImp implements UserDetails {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 7137660071839033186L;
+	
+	/** The username. */
 	private String username;
+	
+	/** The password. */
 	private String password;
+	
+	/** The is enabled. */
 	private boolean isEnabled;
+	
+	/** The termination date. */
 	private LocalDate terminationDate;
+	
+	/** The role set. */
 	private Set<Role> roleSet;
+	
+	/** The privilege set. */
 	private Set<Privilege> privilegeSet;
 
+	/**
+	 * Instantiates a new user details imp.
+	 */
 	public UserDetailsImp() { }
 	
+	/**
+	 * Instantiates a new user details imp.
+	 *
+	 * @param user the user
+	 */
 	public UserDetailsImp(User user) {
 		this.username = user.getUsername();
 		this.password = user.getPassword();
@@ -41,6 +65,11 @@ public class UserDetailsImp implements UserDetails {
 		}
 	}
 	
+	/**
+	 * Gets the authorities.
+	 *
+	 * @return the authorities
+	 */
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
@@ -48,61 +77,89 @@ public class UserDetailsImp implements UserDetails {
 		
 		if (!roleSet.isEmpty()) {
 			for (Role role : roleSet) {
-				authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+				if ((LocalDate.now().isAfter(role.getStartLocalDate()) || LocalDate.now().isEqual(role.getStartLocalDate()))
+						&& (LocalDate.now().isBefore(role.getEndLocalDate()) || LocalDate.now().isEqual(role.getEndLocalDate()))) {
+					authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+				}
 			}
 		}
 		
 		if (!privilegeSet.isEmpty()) {
 			for (Privilege privilege : privilegeSet) {
-				authorities.add(new SimpleGrantedAuthority(privilege.getPrivilegeName()));
+				if ((LocalDate.now().isAfter(privilege.getStartLocalDate()) || LocalDate.now().isEqual(privilege.getStartLocalDate()))
+						&& LocalDate.now().isBefore(privilege.getEndLocalDate()) || LocalDate.now().isEqual(privilege.getEndLocalDate())) {
+					authorities.add(new SimpleGrantedAuthority(privilege.getPrivilegeName()));
+				}
 			}
 		}
-		
-//		List<GrantedAuthority> authorities = new ArrayList<>();
-//    	if (roleSet != null && !roleSet.isEmpty()) {
-//            for (Role role: roleSet) {
-//            	authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-//            }
-//        }
-		
         return authorities;
 	}
 
+	/**
+	 * Gets the password.
+	 *
+	 * @return the password
+	 */
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return password;
 	}
 
+	/**
+	 * Gets the username.
+	 *
+	 * @return the username
+	 */
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return username;
 	}
 
+	/**
+	 * Checks if is account non expired.
+	 *
+	 * @return true, if is account non expired
+	 */
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
+	/**
+	 * Checks if is account non locked.
+	 *
+	 * @return true, if is account non locked
+	 */
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
+	/**
+	 * Checks if is credentials non expired.
+	 *
+	 * @return true, if is credentials non expired
+	 */
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
+	/**
+	 * Checks if is enabled.
+	 *
+	 * @return true, if is enabled
+	 */
 	@Override
 	public boolean isEnabled() {
 		return isEnabled;
 	}
 	
+	/**
+	 * Gets the termination date.
+	 *
+	 * @return the termination date
+	 */
 	public LocalDate getTerminationDate() {
 		return terminationDate;
 	}

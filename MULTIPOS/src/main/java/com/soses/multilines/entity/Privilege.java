@@ -21,7 +21,7 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name="privilege")
 @NamedQuery(name="Privilege.findAll", query="SELECT p FROM Privilege p")
-public class Privilege implements Serializable {
+public class Privilege implements Serializable, Comparable<Privilege> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -39,9 +39,16 @@ public class Privilege implements Serializable {
 	@Column(name="PRIVILEGE_NAME", nullable=false, length=30)
 	private String privilegeName;
 
+	@Column(name="SHORT_NAME", nullable=false, length=20)
+	private String shortName;
+
 	@Temporal(TemporalType.DATE)
 	@Column(name="START_DATE")
 	private LocalDate startLocalDate;
+	
+	@Column(name="ROLE_ID")
+	private int roleId;
+
 
 	public Privilege() {
 	}
@@ -84,6 +91,27 @@ public class Privilege implements Serializable {
 
 	public void setStartLocalDate(LocalDate startLocalDate) {
 		this.startLocalDate = startLocalDate;
+	}
+
+	public int getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	@Override
+	public int compareTo(Privilege o) {
+		return this.shortName.compareToIgnoreCase(o.shortName);
 	}
 
 }

@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{template :: headfiles}"></th:block>
+		<title>Search User</title>
+	</head>
+	<body>
+		<th:block th:replace="~{template :: menu}"></th:block>
+		<div class="container mt-5">
+		    <h2>Add New User</h2>
+		    <hr>
+		    <form th:action="@{/users/add}" th:object="${user}" method="post">
+		        <h4>User</h4>
+		        <!-- User Code -->
+		        <div class="form-group">
+		            <label for="userCode">User Code</label>
+		            <input type="text" th:field="*{userCode}" class="form-control" id="userCode" placeholder="Enter user code" required>
+		            <div class="text-danger" th:if="${#fields.hasErrors('userCode')}" th:errors="*{userCode}">User Code Error</div>
+		        </div>
+
+		        <!-- First Name -->
+		        <div class="form-group">
+		            <label for="firstName">First Name</label>
+		            <input type="text" th:field="*{firstName}" class="form-control" id="firstName" placeholder="Enter first name" required>
+		            <div class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</div>
+		        </div>
+		
+		        <!-- Last Name -->
+		        <div class="form-group">
+		            <label for="lastName">Last Name</label>
+		            <input type="text" th:field="*{lastName}" class="form-control" id="lastName" placeholder="Enter last name" required>
+		            <div class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</div>
+		        </div>
+
+		        <!-- Username -->
+		        <div class="form-group">
+		            <label for="username">Username</label>
+		            <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Enter username" required>
+		            <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+		        </div>
+		
+		        <!-- Password -->
+		        <div class="form-group">
+		            <label for="password">Password</label>
+		            <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Enter password" required>
+		            <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+		        </div>
+		        
+				<hr>
+				<h4>Access Level</h4>
+				<div th:if="${roles != null}" th:each="role: ${roles}" data-role-id="${role.roleId}">
+				
+					<div class="d-flex align-items-center">
+						<h5 class="me-3" th:text="${role.shortName}">Role Name</h5>
+                        <!-- Checkbox for Role -->
+                        <div class="form-check">
+                            <input class="form-check-input role-checkbox" type="checkbox" th:value="${role.roleId}" id="'roleCheckbox-'+${role.roleId}">
+                            <label class="form-check-label" th:for="'roleCheckbox-'+${role.roleId}">
+                                Assign Role
+                            </label>
+                        </div>
+					</div>
+					
+					<div class="ml-4">
+                        <!-- Privileges for Role -->
+                        <div class="form-group ml-3" th:each="privilege : ${role.privilegeSet}">
+                            <div class="form-check">
+                                <input class="form-check-input privilege-checkbox" type="checkbox" th:value="${privilege.privilegeId}" id="'privilegeCheckbox-'+${privilege.privilegeId}">
+                                <label class="form-check-label" th:for="'privilegeCheckbox-'+${privilege.privilegeId}" th:text="${privilege.shortName}">Privilege Name</label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+				</div>
+				<hr>
+		        <button type="submit" class="btn btn-primary mb-3">Add User</button>
+		    </form>
+		</div>
+		<th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
+		<script type="text/javascript" th:src="@{/js/user/user_registration.js}"></script>
+	</body>
+</HTML >
