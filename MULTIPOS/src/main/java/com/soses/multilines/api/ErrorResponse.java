@@ -199,4 +199,8 @@ public class ErrorResponse {
 		this.timestamp = timestamp;
 	}
 
+	/**
+	 * Instantiates a new error response.
+	 */
+	public ErrorResponse () {}
 }

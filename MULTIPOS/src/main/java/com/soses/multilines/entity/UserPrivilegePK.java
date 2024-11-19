@@ -2,9 +2,11 @@ package com.soses.multilines.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
@@ -26,9 +28,10 @@ public class UserPrivilegePK implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="ASSIGNED_TIMESTAMP", unique=true, nullable=false)
 	private LocalDateTime assignedTimestamp;
-
+	
 	public UserPrivilegePK() {
 	}
+    
 	public int getUserId() {
 		return this.userId;
 	}
@@ -41,34 +44,30 @@ public class UserPrivilegePK implements Serializable {
 	public void setPrivilegeId(int privilegeId) {
 		this.privilegeId = privilegeId;
 	}
+
 	public LocalDateTime getAssignedTimestamp() {
-		return this.assignedTimestamp;
+		return assignedTimestamp;
 	}
+
 	public void setAssignedTimestamp(LocalDateTime assignedTimestamp) {
 		this.assignedTimestamp = assignedTimestamp;
 	}
 
-	public boolean equals(Object other) {
-		if (this == other) {
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
-		if (!(other instanceof UserPrivilegePK)) {
+		if (obj == null)
 			return false;
-		}
-		UserPrivilegePK castOther = (UserPrivilegePK)other;
-		return 
-			(this.userId == castOther.userId)
-			&& (this.privilegeId == castOther.privilegeId)
-			&& this.assignedTimestamp.equals(castOther.assignedTimestamp);
+		if (getClass() != obj.getClass())
+			return false;
+		UserPrivilegePK other = (UserPrivilegePK) obj;
+		return Objects.equals(assignedTimestamp, other.assignedTimestamp) && privilegeId == other.privilegeId
+				&& userId == other.userId;
 	}
 
+	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int hash = 17;
-		hash = hash * prime + this.userId;
-		hash = hash * prime + this.privilegeId;
-		hash = hash * prime + this.assignedTimestamp.hashCode();
-		
-		return hash;
+		return Objects.hash(assignedTimestamp, privilegeId, userId);
 	}
 }

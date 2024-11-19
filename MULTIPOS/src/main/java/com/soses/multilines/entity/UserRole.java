@@ -2,11 +2,13 @@ package com.soses.multilines.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -35,6 +37,13 @@ public class UserRole implements Serializable {
 
 	public UserRole() {
 	}
+	
+    @PrePersist
+    public void prePersist() {
+        if (id.getAssignedTimestamp() == null) {
+            id.setAssignedTimestamp(LocalDateTime.now());
+        }
+    }
 
 	public UserRolePK getId() {
 		return this.id;

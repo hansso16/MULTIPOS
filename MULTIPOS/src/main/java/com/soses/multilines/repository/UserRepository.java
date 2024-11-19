@@ -1,16 +1,12 @@
 package com.soses.multilines.repository;
 
-import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.soses.multilines.entity.Role;
 import com.soses.multilines.entity.User;
 
 /**
@@ -26,9 +22,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	 * Find by username.
 	 *
 	 * @param username the username
-	 * @return the user
+	 * @return the optional
 	 */
-	User findByUsername(String username);
+	Optional<User> findByUsername(String username);
 	
 	/**
 	 * Find by username contains.

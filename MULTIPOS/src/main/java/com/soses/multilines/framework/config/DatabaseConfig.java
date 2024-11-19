@@ -48,6 +48,8 @@ public class DatabaseConfig {
         hikariConfig.setIdleTimeout(dbProperties.getIdleTimeout());        
         hikariConfig.setConnectionTestQuery(dbProperties.getConnectionTestQuery());
         hikariConfig.setPoolName(dbProperties.getPoolName());
+        hikariConfig.setMaxLifetime(dbProperties.getMaxLifetime());
+        hikariConfig.setConnectionTimeout(dbProperties.getConnectionTimeout());
 
         hikariConfig.addDataSourceProperty("dataSource.cachePrepStmts", dbProperties.isCachePrepStmts());
         hikariConfig.addDataSourceProperty("dataSource.prepStmtCacheSize", dbProperties.getPrepStmtCacheSize());

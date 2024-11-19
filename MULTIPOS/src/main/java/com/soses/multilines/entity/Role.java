@@ -35,7 +35,7 @@ public class Role implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ROLE_ID", unique=true, nullable=false)
-	private int roleId;
+	private Integer roleId;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="END_DATE")

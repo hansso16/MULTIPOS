@@ -33,7 +33,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="USER_ID", unique=true, nullable=false)
 	private int userId;
 
@@ -168,6 +168,14 @@ public class User implements Serializable {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", entryTimestamp=" + entryTimestamp + ", password=" + password
+				+ ", terminationDate=" + terminationDate + ", updateTimestamp=" + updateTimestamp + ", userCode="
+				+ userCode + ", username=" + username + ", lastName=" + lastName + ", firstName=" + firstName
+				+ ", roleSet=" + roleSet + ", privileges=" + privileges + "]";
 	}
 
 }

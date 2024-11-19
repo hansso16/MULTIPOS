@@ -67,6 +67,12 @@ public class DatabaseProperties {
     @Value("${db.useServerPrepStmts}")
     protected boolean useServerPrepStmts;
 
+    @Value("${db.maxLifetime}")
+    protected int maxLifetime;
+    
+    @Value("${db.connectionTimeout}")
+    protected int connectionTimeout;
+
 	public String getDriverClassName() {
 		return driverClassName;
 	}
@@ -186,6 +192,31 @@ public class DatabaseProperties {
 	public void setUseServerPrepStmts(boolean useServerPrepStmts) {
 		this.useServerPrepStmts = useServerPrepStmts;
 	}
-    
-    
+
+	public int getMaxLifetime() {
+		return maxLifetime;
+	}
+
+	public void setMaxLifetime(int maxLifetime) {
+		this.maxLifetime = maxLifetime;
+	}
+
+	public int getConnectionTimeout() {
+		return connectionTimeout;
+	}
+
+	public void setConnectionTimeout(int connectionTimeout) {
+		this.connectionTimeout = connectionTimeout;
+	}
+
+	@Override
+	public String toString() {
+		return "DatabaseProperties [driverClassName=" + driverClassName + ", host=" + host + ", port=" + port
+				+ ", dbName=" + dbName + ", username=" + username + ", password=" + password + ", maxPoolSize="
+				+ maxPoolSize + ", minimumIdle=" + minimumIdle + ", idleTimeout=" + idleTimeout
+				+ ", connectionTestQuery=" + connectionTestQuery + ", poolName=" + poolName + ", cachePrepStmts="
+				+ cachePrepStmts + ", prepStmtCacheSize=" + prepStmtCacheSize + ", prepStmtCacheSqlLimit="
+				+ prepStmtCacheSqlLimit + ", useServerPrepStmts=" + useServerPrepStmts + ", maxLifetime=" + maxLifetime
+				+ ", connectionTimeout=" + connectionTimeout + "]";
+	} 
 }

@@ -7,9 +7,17 @@
 	<body>
 		<th:block th:replace="~{template :: menu}"></th:block>
 		<div class="container mt-5">
+			<div th:if="${errorMessage != null && !#strings.isEmpty(errorMessage)}" class="alert alert-danger alert-dismissible fade show" role="alert">
+			  	<span th:text="${errorMessage}"></span >
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			<div th:if="${successMessage != null && !#strings.isEmpty(successMessage)}" class="alert alert-success alert-dismissible fade show" role="alert">
+			  	<span th:text="${successMessage}"></span >
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
 		    <h2>Add New User</h2>
 		    <hr>
-		    <form th:action="@{/users/add}" th:object="${user}" method="post">
+		    <form th:action="@{/user/register}" th:object="${user}" method="post">
 		        <h4>User</h4>
 		        <!-- User Code -->
 		        <div class="form-group">
@@ -54,8 +62,8 @@
 						<h5 class="me-3" th:text="${role.shortName}">Role Name</h5>
                         <!-- Checkbox for Role -->
                         <div class="form-check">
-                            <input class="form-check-input role-checkbox" type="checkbox" th:value="${role.roleId}" id="'roleCheckbox-'+${role.roleId}">
-                            <label class="form-check-label" th:for="'roleCheckbox-'+${role.roleId}">
+                            <input class="form-check-input role-checkbox" th:name="roleIds" type="checkbox" th:value="${role.roleId}" id="'roleCheckbox-'+${role.roleId}" hidden>
+                            <label class="form-check-label" th:for="'roleCheckbox-'+${role.roleId}" hidden>
                                 Assign Role
                             </label>
                         </div>
@@ -65,7 +73,7 @@
                         <!-- Privileges for Role -->
                         <div class="form-group ml-3" th:each="privilege : ${role.privilegeSet}">
                             <div class="form-check">
-                                <input class="form-check-input privilege-checkbox" type="checkbox" th:value="${privilege.privilegeId}" id="'privilegeCheckbox-'+${privilege.privilegeId}">
+                                <input class="form-check-input privilege-checkbox" th:name="privilegeIds" type="checkbox" th:value="${privilege.privilegeId}" id="'privilegeCheckbox-'+${privilege.privilegeId}">
                                 <label class="form-check-label" th:for="'privilegeCheckbox-'+${privilege.privilegeId}" th:text="${privilege.shortName}">Privilege Name</label>
                             </div>
                         </div>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +16,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.soses.multilines.api.user.UserRegistrationRequest;
+import com.soses.multilines.api.user.UserRegistrationResponse;
+import com.soses.multilines.common.ErrorConstants;
 import com.soses.multilines.common.GeneralUtil;
+import com.soses.multilines.common.MessageConstants;
+import com.soses.multilines.common.UrlConstants;
 import com.soses.multilines.common.ViewConstants;
 import com.soses.multilines.entity.Role;
 import com.soses.multilines.entity.User;
 import com.soses.multilines.service.RoleService;
+import com.soses.multilines.service.user.UserRegistrationService;
+
+import ch.qos.logback.core.util.StringUtil;
 
 @Controller
 @Scope(value = WebApplicationContext.SCOPE_REQUEST)
@@ -29,14 +37,17 @@ public class UserRegistrationController {
 	
 	private RoleService roleService;
 	
-	public UserRegistrationController(RoleService roleService) {
+	private UserRegistrationService userRegistrationService;
+	
+	public UserRegistrationController(RoleService roleService, @Qualifier("UserRegistrationServiceImpl") UserRegistrationService userRegistrationService) {
 		super();
 		this.roleService = roleService;
+		this.userRegistrationService = userRegistrationService;
 	}
 
 	@GetMapping("/user/register")
-	public String addEmployee(Model model, Principal principal) {
-		log.info("ENTER GET:addEmployee(model)");
+	public String registerUser(Model model, Principal principal) {
+		log.info("ENTER GET:registerUser(model)");
 
 		List<Role> roleList = roleService.findAllRoles();
 		
@@ -50,31 +61,29 @@ public class UserRegistrationController {
 	}
 	
 	@PostMapping("/user/register")
-	public RedirectView addEmployee(Model model, UserRegistrationRequest request, RedirectAttributes redirectAttrs) {
-//		log.info("ENTER POST(model, request):"+request.toString());
-//		
-//		UserRegistrationResponse res = userRegistrationService.registerUser(request);
-//		RedirectView redirectView = new RedirectView();
-//		redirectView.setContextRelative(true);
-//		redirectView.setExposeModelAttributes(false);
-//		
-//		if (res != null) {
-//			if (res.getError() != null) {
-//				String redirectUrl = "/user/add/"+res.getEmployeeId();
-//				redirectView.setUrl(redirectUrl);
-//				redirectAttrs.addFlashAttribute(GlobalConstants.ERROR_MESSAGE, res.getError().getMessage());
-//				return redirectView;
-//			}
-//			if (!StringUtil.isEmpty(res.getResponseMessage())) {
-//				String redirectUrl = "/user/" + res.getUsername();
-//				redirectView.setUrl(redirectUrl);
-//				redirectAttrs.addFlashAttribute(GlobalConstants.SUCCESS_MESSAGE, res.getResponseMessage());
-//				return redirectView;
-//			}
-//			model.addAttribute("res", res);
-//		}
+	public RedirectView registerUser(Model model, UserRegistrationRequest request, RedirectAttributes redirectAttrs) {
 		
-//		return redirectView;
-		return null;
+		log.info("ENTER POST(model, request):"+request.toString());
+		
+		RedirectView redirectView = new RedirectView();
+		redirectView.setContextRelative(true);
+		redirectView.setExposeModelAttributes(false);
+		redirectView.setUrl(UrlConstants.USER_REGISTER);
+		UserRegistrationResponse res = userRegistrationService.registerUser(request);
+		
+		if (res != null) {
+			if (res.getErrorMessage() != null) {
+				log.info(res.getErrorMessage());
+				redirectAttrs.addFlashAttribute(ErrorConstants.ERROR_MESSAGE, res.getErrorMessage());
+				return redirectView;
+			}
+			if (!StringUtil.isNullOrEmpty(res.getResponseMessage())) {
+				redirectAttrs.addFlashAttribute(MessageConstants.SUCCESS_MESSAGE, res.getResponseMessage());
+				return redirectView;
+			}
+			model.addAttribute("res", res);
+		}
+		
+		return redirectView;
 	}
 }

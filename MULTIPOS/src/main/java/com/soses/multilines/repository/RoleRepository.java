@@ -11,4 +11,5 @@ import com.soses.multilines.entity.Role;
 public interface RoleRepository extends JpaRepository<Role, Integer> {
 
 	List<Role> findAll();
+	
 }

@@ -27,7 +27,7 @@ public class Privilege implements Serializable, Comparable<Privilege> {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PRIVILEGE_ID", unique=true, nullable=false)
-	private int privilegeId;
+	private Integer privilegeId;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="END_DATE")
