@@ -5,17 +5,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.stereotype.Component;
 
 import com.soses.multilines.auth.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -36,20 +41,6 @@ public class SecurityConfig {
         		.defaultSuccessUrl("/", true)
     		)
             .logout(logout -> logout.permitAll());
-
-        //http.authorizeHttpRequests(requests -> requests.anyRequest().authenticated());
-        
-//        List<AntMatcher> matchers = antMatcherRepo.findAllByEndDateGreaterThanAndEffDateLessThanEqual(LocalDate.now(), LocalDate.now());
-//        for (AntMatcher matcher : matchers) {
-//        	http.authorizeHttpRequests().antMatchers(matcher.getPath()).access(matcher.getRoleInfo());
-//        }
-        
-//        http
-//	        .authorizeHttpRequests(requests -> requests
-//                .requestMatchers("/admin/**").hasRole("ADMIN")
-//                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-//                .anyRequest().authenticated())
-//        ;
 
         return http.build();
     }
@@ -76,5 +67,18 @@ public class SecurityConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    
+    @Component("customSecurity")
+    public class CustomSecurityExpression {
+
+        public boolean hasPrivilegeStartingWith(String prefix) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if (auth == null || auth.getAuthorities() == null) return false;
+
+            return auth.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().startsWith(prefix));
+        }
     }
 }

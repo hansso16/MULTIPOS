@@ -2,12 +2,14 @@ package com.soses.multilines.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -39,75 +41,89 @@ public class Privilege implements Serializable, Comparable<Privilege> {
 	@Column(name="PRIVILEGE_NAME", nullable=false, length=30)
 	private String privilegeName;
 
-	@Column(name="SHORT_NAME", nullable=false, length=20)
+	@Column(name="PRIVILEGE_SHORT_NAME", nullable=false, length=20)
 	private String shortName;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="START_DATE")
 	private LocalDate startLocalDate;
 	
-	@Column(name="ROLE_ID")
-	private int roleId;
+	@ManyToMany(mappedBy = "privilegeSet")
+    private Set<Role> roles;
 
 
 	public Privilege() {
 	}
 
-	public int getPrivilegeId() {
-		return this.privilegeId;
+	public Integer getPrivilegeId() {
+		return privilegeId;
 	}
 
-	public void setPrivilegeId(int privilegeId) {
+
+	public void setPrivilegeId(Integer privilegeId) {
 		this.privilegeId = privilegeId;
 	}
 
+
 	public LocalDate getEndLocalDate() {
-		return this.endLocalDate;
+		return endLocalDate;
 	}
+
 
 	public void setEndLocalDate(LocalDate endLocalDate) {
 		this.endLocalDate = endLocalDate;
 	}
 
+
 	public String getPrivilegeDescription() {
-		return this.privilegeDescription;
+		return privilegeDescription;
 	}
+
 
 	public void setPrivilegeDescription(String privilegeDescription) {
 		this.privilegeDescription = privilegeDescription;
 	}
 
+
 	public String getPrivilegeName() {
-		return this.privilegeName;
+		return privilegeName;
 	}
+
 
 	public void setPrivilegeName(String privilegeName) {
 		this.privilegeName = privilegeName;
 	}
 
-	public LocalDate getStartLocalDate() {
-		return this.startLocalDate;
-	}
-
-	public void setStartLocalDate(LocalDate startLocalDate) {
-		this.startLocalDate = startLocalDate;
-	}
-
-	public int getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(int roleId) {
-		this.roleId = roleId;
-	}
 
 	public String getShortName() {
 		return shortName;
 	}
 
+
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
 	}
+
+
+	public LocalDate getStartLocalDate() {
+		return startLocalDate;
+	}
+
+
+	public void setStartLocalDate(LocalDate startLocalDate) {
+		this.startLocalDate = startLocalDate;
+	}
+
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
 
 	@Override
 	public int compareTo(Privilege o) {

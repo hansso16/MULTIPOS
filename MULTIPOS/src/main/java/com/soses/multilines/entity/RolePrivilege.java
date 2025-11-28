@@ -25,14 +25,6 @@ public class RolePrivilege implements Serializable {
 	@EmbeddedId
 	private RolePrivilegePK id;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="END_DATE")
-	private LocalDate endDate;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="START_DATE")
-	private LocalDate startDate;
-
 	public RolePrivilege() {
 	}
 
@@ -42,22 +34,6 @@ public class RolePrivilege implements Serializable {
 
 	public void setId(RolePrivilegePK id) {
 		this.id = id;
-	}
-
-	public LocalDate getEndDate() {
-		return this.endDate;
-	}
-
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
-
-	public LocalDate getStartDate() {
-		return this.startDate;
-	}
-
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
 	}
 
 }

@@ -73,7 +73,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
         user.setLastName(request.getLastName());
         user.setPassword(passwordEncoder.encode(request.getPassword())); // Encrypt the password
         user.setRoleSet(roles);
-        user.setPrivileges(privileges);
+        //user.setPrivileges(privileges);
         userRepository.save(user);
         response.setResponseMessage(MessageConstants.MESSAGE_USER_SAVED + request.getUsername());
         

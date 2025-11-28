@@ -2,6 +2,7 @@ package com.soses.multilines.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -18,59 +19,52 @@ public class UserRolePK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="USER_ID", unique=true, nullable=false)
-	private int userId;
+	@Column(name="USER_CODE", unique=true, nullable=false)
+	private int userCode;
 
 	@Column(name="ROLE_ID", unique=true, nullable=false)
 	private int roleId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="ASSIGNED_TIMESTAMP", unique=true, nullable=false)
-	private LocalDateTime assignedTimestamp;
-
 	public UserRolePK() {
 	}
-	
-	public int getUserId() {
-		return this.userId;
+
+	public int getUserCode() {
+		return userCode;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
+
+	public void setUserCode(int userCode) {
+		this.userCode = userCode;
 	}
+
 	public int getRoleId() {
-		return this.roleId;
+		return roleId;
 	}
+
 	public void setRoleId(int roleId) {
 		this.roleId = roleId;
 	}
-	public LocalDateTime getAssignedTimestamp() {
-		return this.assignedTimestamp;
-	}
-	public void setAssignedTimestamp(LocalDateTime assignedTimestamp) {
-		this.assignedTimestamp = assignedTimestamp;
+
+	@Override
+	public String toString() {
+		return "UserRolePK [userCode=" + userCode + ", roleId=" + roleId + "]";
 	}
 
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (!(other instanceof UserRolePK)) {
-			return false;
-		}
-		UserRolePK castOther = (UserRolePK)other;
-		return 
-			(this.userId == castOther.userId)
-			&& (this.roleId == castOther.roleId)
-			&& this.assignedTimestamp.equals(castOther.assignedTimestamp);
-	}
-
+	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int hash = 17;
-		hash = hash * prime + this.userId;
-		hash = hash * prime + this.roleId;
-		hash = hash * prime + this.assignedTimestamp.hashCode();
-		
-		return hash;
+		return Objects.hash(roleId, userCode);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserRolePK other = (UserRolePK) obj;
+		return roleId == other.roleId && userCode == other.userCode;
+	}
+
+	
 }

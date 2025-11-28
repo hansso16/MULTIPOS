@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.collection.spi.PersistentSet;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,7 +58,13 @@ public class UserDetailsImp implements UserDetails {
 		this.password = user.getPassword();
 		this.terminationDate = user.getTerminationDate();
 		this.roleSet = user.getRoleSet();
-		this.privilegeSet = user.getPrivileges();
+		if (!roleSet.isEmpty()) {
+			for (Role r : roleSet) {
+				privilegeSet = r.getPrivilegeSet();
+			}
+		} else {
+			privilegeSet = new PersistentSet<>();
+		}
 		if(terminationDate != null && terminationDate.isBefore(java.time.LocalDate.now())) {
 			this.isEnabled = false;
 		} else { 

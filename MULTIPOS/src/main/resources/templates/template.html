@@ -33,18 +33,37 @@
 						            <li><a class="dropdown-item" href="#" th:href="@{/}">Stock Location</a></li>
 					        	</ul>
 					        </li>
-					        <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_CONTACTS')">
+					        <!-- sec:authorize="hasAnyAuthority('CONTACTS_ADD', 'CONTACTS_VIEW', 'CONTACTS_UPDATE' ,'CONTACTS_DELETE')" -->
+					        <li class="nav-item dropdown" sec:authorize="@customSecurity.hasPrivilegeStartingWith('CONTACTS')">
 					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					            	Contacts
 					         	</a>
-					  			<ul class="dropdown-menu" aria-labelledby="employeeDropdown">
+					  			<ul class="dropdown-menu" aria-labelledby="contactsDropdown">
+						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('CONTACTS_ADD')" th:href="@{/}">New Contact</a></li>
+						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('CONTACTS_VIEW')" th:href="@{/}">Contacts</a></li>
+					        	</ul>
+					        </li>
+					        <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('PRODUCT_ADD', 'PRODUCT_VIEW', 'PRODUCT_UPDATE' ,'PRODUCT_DELETE')">
+					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					            	Product
+					         	</a>
+					  			<ul class="dropdown-menu" aria-labelledby="ProductDropdown">
+						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('PRODUCT_ADD')" th:href="@{/}">New Product</a></li>
+						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('PRODUCT_VIEW')" th:href="@{/}">Product</a></li>
+					        	</ul>
+					        </li>
+					        <!-- <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('CONTACTS_ADD', 'CONTACTS_VIEW', 'CONTACTS_UPDATE' ,'CONTACTS_DELETE')">
+					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					            	Contacts
+					         	</a>
+					  			<ul class="dropdown-menu" aria-labelledby="contactsDropdown">
 						            <li><a class="dropdown-item" href="#" th:href="@{/}">All Contacts</a></li>
 						            <li><hr class="dropdown-divider"></li>
 						            <li><a class="dropdown-item" href="#" th:href="@{/}">Customers</a></li>
 						            <li><a class="dropdown-item" href="#" th:href="@{/}">Suppliers</a></li>
 						            <li><a class="dropdown-item" href="#" th:href="@{/}">Employees</a></li>
 					        	</ul>
-					        </li>
+					        </li> -->
 					        <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN')">
 					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					            	User Management

@@ -27,23 +27,9 @@ public class UserRole implements Serializable {
 	@EmbeddedId
 	private UserRolePK id;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="END_DATE")
-	private LocalDate endDate;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="START_DATE")
-	private LocalDate startDate;
 
 	public UserRole() {
 	}
-	
-    @PrePersist
-    public void prePersist() {
-        if (id.getAssignedTimestamp() == null) {
-            id.setAssignedTimestamp(LocalDateTime.now());
-        }
-    }
 
 	public UserRolePK getId() {
 		return this.id;
@@ -51,22 +37,6 @@ public class UserRole implements Serializable {
 
 	public void setId(UserRolePK id) {
 		this.id = id;
-	}
-
-	public LocalDate getEndDate() {
-		return this.endDate;
-	}
-
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
-
-	public LocalDate getStartDate() {
-		return this.startDate;
-	}
-
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
 	}
 
 }

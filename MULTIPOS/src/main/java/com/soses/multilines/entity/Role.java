@@ -9,6 +9,7 @@ import java.util.TreeSet;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -47,38 +48,37 @@ public class Role implements Serializable {
 	@Column(name="ROLE_NAME", length=20)
 	private String roleName;
 
-	@Column(name="SHORT_NAME", length=20)
+	@Column(name="ROLE_SHORT_NAME", length=20)
 	private String shortName;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="START_DATE")
 	private LocalDate startLocalDate;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "USER_ROLE",
+        name = "role_privilege",
         joinColumns = @JoinColumn(name = "ROLE_ID"),
-        inverseJoinColumns = @JoinColumn(name = "USER_ID")
+        inverseJoinColumns = @JoinColumn(name = "privilege_id")
     )
-    private Set<User> userSet = new HashSet<>();
+    private Set<Privilege> privilegeSet = new HashSet<>();
 	
-	@OneToMany
-	@JoinColumn(name="ROLE_ID")
-	private SortedSet<Privilege> privilegeSet = new TreeSet<>();
+	@ManyToMany(mappedBy = "roleSet")
+	private Set<User> userSet;
 
 	public Role() {
 	}
 
-	public int getRoleId() {
-		return this.roleId;
+	public Integer getRoleId() {
+		return roleId;
 	}
 
-	public void setRoleId(int roleId) {
+	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
 
 	public LocalDate getEndLocalDate() {
-		return this.endLocalDate;
+		return endLocalDate;
 	}
 
 	public void setEndLocalDate(LocalDate endLocalDate) {
@@ -86,7 +86,7 @@ public class Role implements Serializable {
 	}
 
 	public String getRoleDescription() {
-		return this.roleDescription;
+		return roleDescription;
 	}
 
 	public void setRoleDescription(String roleDescription) {
@@ -94,19 +94,35 @@ public class Role implements Serializable {
 	}
 
 	public String getRoleName() {
-		return this.roleName;
+		return roleName;
 	}
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
 
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
 	public LocalDate getStartLocalDate() {
-		return this.startLocalDate;
+		return startLocalDate;
 	}
 
 	public void setStartLocalDate(LocalDate startLocalDate) {
 		this.startLocalDate = startLocalDate;
+	}
+
+	public Set<Privilege> getPrivilegeSet() {
+		return privilegeSet;
+	}
+
+	public void setPrivilegeSet(Set<Privilege> privilegeSet) {
+		this.privilegeSet = privilegeSet;
 	}
 
 	public Set<User> getUserSet() {
@@ -117,20 +133,11 @@ public class Role implements Serializable {
 		this.userSet = userSet;
 	}
 
-	public SortedSet<Privilege> getPrivilegeSet() {
-		return privilegeSet;
-	}
-
-	public void setPrivilegeSet(SortedSet<Privilege> privilegeSet) {
-		this.privilegeSet = privilegeSet;
-	}
-
-	public String getShortName() {
-		return shortName;
-	}
-
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
+	@Override
+	public String toString() {
+		return "Role [roleId=" + roleId + ", endLocalDate=" + endLocalDate + ", roleDescription=" + roleDescription
+				+ ", roleName=" + roleName + ", shortName=" + shortName + ", startLocalDate=" + startLocalDate
+				+ ", privilegeSet=" + privilegeSet + ", userSet=" + userSet + "]";
 	}
 
 }

@@ -72,12 +72,6 @@ public class User implements Serializable {
 	    )
     private Set<Role> roleSet= new HashSet<>();
 	
-	@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "user_privilege", 
-        joinColumns = @JoinColumn(name = "user_id"), 
-        inverseJoinColumns = @JoinColumn(name = "privilege_id"))
-    private Set<Privilege> privileges;
 
 	public User() {
 	}
@@ -146,13 +140,13 @@ public class User implements Serializable {
 		this.roleSet = roleSet;
 	}
 
-	public Set<Privilege> getPrivileges() {
-		return privileges;
-	}
-
-	public void setPrivileges(Set<Privilege> privileges) {
-		this.privileges = privileges;
-	}
+//	public Set<Privilege> getPrivileges() {
+//		return privileges;
+//	}
+//
+//	public void setPrivileges(Set<Privilege> privileges) {
+//		this.privileges = privileges;
+//	}
 
 	public String getLastName() {
 		return lastName;
@@ -175,7 +169,7 @@ public class User implements Serializable {
 		return "User [userId=" + userId + ", entryTimestamp=" + entryTimestamp + ", password=" + password
 				+ ", terminationDate=" + terminationDate + ", updateTimestamp=" + updateTimestamp + ", userCode="
 				+ userCode + ", username=" + username + ", lastName=" + lastName + ", firstName=" + firstName
-				+ ", roleSet=" + roleSet + ", privileges=" + privileges + "]";
+				+ ", roleSet=" + roleSet + "]";
 	}
 
 }
