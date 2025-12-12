@@ -16,7 +16,7 @@ public class CustomErrorController implements ErrorController {
 	
 	@ExceptionHandler(Exception.class)
     public String handleAnyException(Exception ex, Model model) {
-        model.addAttribute("message", ex.getMessage());
+        //model.addAttribute("message", ex.getMessage());
         return "error"; 
     }
 }
