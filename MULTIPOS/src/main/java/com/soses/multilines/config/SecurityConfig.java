@@ -8,13 +8,10 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.stereotype.Component;
 
 import com.soses.multilines.auth.UserDetailsServiceImpl;
 
@@ -63,22 +60,8 @@ public class SecurityConfig {
         return new UserDetailsServiceImpl();
     }
 	
-	
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-    
-    @Component("customSecurity")
-    public class CustomSecurityExpression {
-
-        public boolean hasPrivilegeStartingWith(String prefix) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-            if (auth == null || auth.getAuthorities() == null) return false;
-
-            return auth.getAuthorities().stream()
-                    .anyMatch(a -> a.getAuthority().startsWith(prefix));
-        }
     }
 }

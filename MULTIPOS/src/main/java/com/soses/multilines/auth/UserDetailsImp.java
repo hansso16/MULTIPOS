@@ -81,6 +81,7 @@ public class UserDetailsImp implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
 		Set<GrantedAuthority> authorities = new HashSet<>();
+		Set<String> moduleSet = new HashSet<>();
 		
 		if (!roleSet.isEmpty()) {
 			for (Role role : roleSet) {
@@ -96,7 +97,14 @@ public class UserDetailsImp implements UserDetails {
 				if ((LocalDate.now().isAfter(privilege.getStartLocalDate()) || LocalDate.now().isEqual(privilege.getStartLocalDate()))
 						&& LocalDate.now().isBefore(privilege.getEndLocalDate()) || LocalDate.now().isEqual(privilege.getEndLocalDate())) {
 					authorities.add(new SimpleGrantedAuthority(privilege.getPrivilegeName()));
+					moduleSet.add(privilege.getPrivilegeModule());
 				}
+			}
+		}
+		
+		if (!moduleSet.isEmpty()) {
+			for (String module : moduleSet) {
+				authorities.add(new SimpleGrantedAuthority(module));
 			}
 		}
         return authorities;

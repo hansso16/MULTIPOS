@@ -38,8 +38,11 @@ public class Privilege implements Serializable, Comparable<Privilege> {
 	@Column(name="PRIVILEGE_DESCRIPTION", length=50)
 	private String privilegeDescription;
 
-	@Column(name="PRIVILEGE_NAME", nullable=false, length=30)
+	@Column(name="PRIVILEGE_NAME", nullable=false, length=20)
 	private String privilegeName;
+	
+	@Column(name="PRIVILEGE_MODULE", nullable=false, length=15)
+	private String privilegeModule;
 
 	@Column(name="PRIVILEGE_SHORT_NAME", nullable=false, length=20)
 	private String shortName;
@@ -50,8 +53,7 @@ public class Privilege implements Serializable, Comparable<Privilege> {
 	
 	@ManyToMany(mappedBy = "privilegeSet")
     private Set<Role> roles;
-
-
+	
 	public Privilege() {
 	}
 
@@ -124,6 +126,13 @@ public class Privilege implements Serializable, Comparable<Privilege> {
 		this.roles = roles;
 	}
 
+	public String getPrivilegeModule() {
+		return privilegeModule;
+	}
+
+	public void setPrivilegeModule(String privilegeModule) {
+		this.privilegeModule = privilegeModule;
+	}
 
 	@Override
 	public int compareTo(Privilege o) {

@@ -1,0 +1,26 @@
+
+
+.table-container {
+    max-height: 450px;
+    overflow-y: auto;
+}
+thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 2;
+}
+.readonly {
+    background-color: #e9ecef;
+}
+
+.inventory-list-box {
+    max-height: 550px;   /* Adjust height as you prefer */
+    min-height: 550px;   /* Optional: keeps UI stable */
+    overflow-y: auto;    /* Scroll vertically when content is long */
+    /* overflow-x: hidden;  /* Avoid horizontal scrollbars */
+}
+
+table input[type="number"] {
+    width: 80px;
+}

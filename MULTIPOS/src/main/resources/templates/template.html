@@ -22,49 +22,42 @@
 			    	
 				    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 				     	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					     	<li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+					         	<a class="nav-link active" href="#" th:href="@{/customerinventory}" id="formLink" role="button">
+					            	FORM
+					         	</a>
+					        </li>
 					        <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					            	Parameters
+					            	Agent
 					         	</a>
-					  			<ul class="dropdown-menu" aria-labelledby="employeeDropdown">
-						            <li><a class="dropdown-item" href="#" th:href="@{/}">Unit of Measurement</a></li>
-						            <li><a class="dropdown-item" href="#" th:href="@{/}">Category</a></li>
-						            <li><a class="dropdown-item" href="#" th:href="@{/}">Bank</a></li>
-						            <li><a class="dropdown-item" href="#" th:href="@{/}">Stock Location</a></li>
+					  			<ul class="dropdown-menu" aria-labelledby="agentDropdown">
+						            <li><a class="dropdown-item" href="#" th:href="@{/agent/customer}">Customer Assignment</a></li>
 					        	</ul>
 					        </li>
-					        <!-- sec:authorize="hasAnyAuthority('CONTACTS_ADD', 'CONTACTS_VIEW', 'CONTACTS_UPDATE' ,'CONTACTS_DELETE')" -->
-					        <li class="nav-item dropdown" sec:authorize="@customSecurity.hasPrivilegeStartingWith('CONTACTS')">
+					        <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					            	Customer
+					         	</a>
+					  			<ul class="dropdown-menu" aria-labelledby="agentDropdown">
+						            <li><a class="dropdown-item" href="#" th:href="@{/customer}">Customer</a></li>
+						            <li><a class="dropdown-item" href="#" th:href="@{/customer/product}">Product Assignment</a></li>
+					        	</ul>
+					        </li>
+					        <!-- 
+					        <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('CUSTOMER' ,'VENDOR')">
 					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					            	Contacts
 					         	</a>
 					  			<ul class="dropdown-menu" aria-labelledby="contactsDropdown">
-						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('CONTACTS_ADD')" th:href="@{/}">New Contact</a></li>
-						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('CONTACTS_VIEW')" th:href="@{/}">Contacts</a></li>
-					        	</ul>
-					        </li>
-					        <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('PRODUCT_ADD', 'PRODUCT_VIEW', 'PRODUCT_UPDATE' ,'PRODUCT_DELETE')">
-					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					            	Product
-					         	</a>
-					  			<ul class="dropdown-menu" aria-labelledby="ProductDropdown">
-						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('PRODUCT_ADD')" th:href="@{/}">New Product</a></li>
-						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('PRODUCT_VIEW')" th:href="@{/}">Product</a></li>
-					        	</ul>
-					        </li>
-					        <!-- <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('CONTACTS_ADD', 'CONTACTS_VIEW', 'CONTACTS_UPDATE' ,'CONTACTS_DELETE')">
-					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					            	Contacts
-					         	</a>
-					  			<ul class="dropdown-menu" aria-labelledby="contactsDropdown">
-						            <li><a class="dropdown-item" href="#" th:href="@{/}">All Contacts</a></li>
-						            <li><hr class="dropdown-divider"></li>
-						            <li><a class="dropdown-item" href="#" th:href="@{/}">Customers</a></li>
-						            <li><a class="dropdown-item" href="#" th:href="@{/}">Suppliers</a></li>
-						            <li><a class="dropdown-item" href="#" th:href="@{/}">Employees</a></li>
+						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('CUSTOMER_ADD')" th:href="@{/}">New Customer</a></li>
+						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('CUSTOMER_VIEW')" th:href="@{/}">Customers</a></li>
+						            <li><hr class="dropdown-divider" sec:authorize="hasAuthority('VENDOR') and hasAuthority('CUSTOMER')"></li>
+						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('VENDOR_ADD')" th:href="@{/}">New Vendor</a></li>
+						            <li><a class="dropdown-item" href="#" sec:authorize="hasAuthority('VENDOR_VIEW')" th:href="@{/}">Vendors</a></li>
 					        	</ul>
 					        </li> -->
-					        <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+					        <!-- <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN')">
 					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					            	User Management
 					         	</a>
@@ -72,7 +65,7 @@
 						            <li><a class="dropdown-item" href="#" th:href="@{/user}">Search Users (view and edit roles)</a></li>
 						            <li><a class="dropdown-item" href="#" th:href="@{/user/register}">Add User</a></li>
 					        	</ul>
-					        </li>
+					        </li> -->
 				     	</ul>
 				     	
 						<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -91,12 +84,6 @@
 					        	</ul>
 					        </li>
 						</ul>
-		     			<!--<a sec:authentication="name" class="btn btn-light disabled">username</a>
-		      			<div sec:authorize="isAuthenticated()">
-							<form action="#" th:action="@{/logout}" method="POST">
-								<button type="submit" class="btn btn-secondary" th:text="${#strings.toUpperCase('logout')}" >Logout</button>
-							</form>
-						</div>-->
 				    </div>
 			 	</div>
 			</nav>
@@ -107,13 +94,13 @@
 				<span class="" th:text="'Total Records Found: ' + ${totalRows}"></span >
 				<ul class="pagination justify-content-center">
 					<li class="page-item" th:classappend="${currentPage+1 == 1? 'disabled':''}">
-						<a class="page-link"  th:href="@{__${#httpServletRequest.requestURI}__(page=${currentPage}, ${searchName}=${searchValue})}" th:text="Previous">Previous</a>
+						<a class="page-link"  th:href="@{${contextPath} + (page=${currentPage}, ${searchName}=${searchValue})}" th:text="Previous">Previous</a>
 					</li>
 					<li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage+1 == pageNumber? 'active' : ''}">
-						<a class="page-link" href="#" th:href="@{__${#httpServletRequest.requestURI}__(page=${pageNumber}, ${searchName}=${searchValue})}" th:text="${pageNumber}">0</a>
+						<a class="page-link" href="#" th:href="@{${contextPath} + (page=${pageNumber}, ${searchName}=${searchValue})}" th:text="${pageNumber}">0</a>
 					</li>
 					<li class="page-item" th:classappend="${currentPage+1 == totalPages? 'disabled':''}">
-						<a class="page-link"  th:href="@{__${#httpServletRequest.requestURI}__(page=${currentPage+2}, ${searchName}=${searchValue})}" th:text="Next">Next</a>
+						<a class="page-link"  th:href="@{${contextPath} + (page=${currentPage+2}, ${searchName}=${searchValue})}" th:text="Next">Next</a>
 					</li>
 				</ul>
 			</nav>

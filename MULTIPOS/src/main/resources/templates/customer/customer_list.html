@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{template :: headfiles}"></th:block>
+		<title>Agent Inventory - Customer List</title>
+	</head>
+	<body>
+		<th:block th:replace="~{template :: menu}"></th:block>
+		<br>
+		<div class="container">
+			<div class="d-flex justify-content-center">
+	        	<form class="d-inline-flex" action="#" th:action="@{/customerinventory}" method="GET" >
+			      	<div class="input-group">
+			      		<div class="form-outline">
+			      			<input class="form-control rounded" type="search" placeholder="Search Customer" 
+			      				name="customerId" th:value="${customerId}" aria-label="Search" autocomplete="off" >
+			      		</div>
+			      		<button class="btn btn-outline-primary" type="submit">Search</button >
+			      	</div>
+		      	</form>
+			</div>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th scope="col" class="d-none">Customer ID</th >
+						<th scope="col">Customer Code</th >
+						<th scope="col">Customer Name</th >
+						<!-- <th scope="col">Action</th > -->
+					</tr>
+				</thead>
+				<tbody th:if="${page != null}">
+					<tr th:each="customer : ${page.content}">
+						<td scope="row" class="d-none">
+							<a th:class="button" href="#" th:text="${customer.customerId}">Customer Id</a>
+							<!--<span th:text="${employee.employeeId}"></span>-->
+						</td >
+						<td scope="row">
+							<a th:class="button" href="#" th:text="${#strings.capitalize(customer.customerCode)}">Customer Code</a>
+						</td >
+						<td th:text="${#strings.capitalize(customer.customerName)}"></td >
+						<!-- <td >
+							<a role="button" class="btn btn-primary" th:href="@{/customer/} + ${customer.customerCode} + @{/product}" href="#" th:text="${'Product Assignment'}">Product Assignment</a>
+						</td > -->
+					</tr >
+				</tbody >
+			</table>
+			<th:block th:replace="~{template :: pagination(searchName='customerId', searchValue=${customerId})}"></th:block>
+		</div>
+		
+		<th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
+	</body>
+</HTML >

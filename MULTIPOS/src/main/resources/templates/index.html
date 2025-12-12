@@ -14,7 +14,9 @@
 		        <h1>2isAnonymous()</h1>
 			</div>
 	        
-	        <h1 sec:authorize="hasRole('ROLE_ADMIN')" th:text="'3ROLE_ADMIN THYMELEAF'">3ROLE_ADMIN</h1>
+	        <h1 sec:authorize="hasRole('ADMIN')" th:text="'3.0ROLE_ADMIN ROLE'">3ROLE_ADMIN</h1>
+	        <h1 sec:authorize="hasRole('ROLE_ADMIN')" th:text="'3.1ROLE_ADMIN ROLE_ADMIN'">3ROLE_ADMIN</h1>
+	        <h1 sec:authorize="hasAuthority('ROLE_ADMIN')" th:text="'3.2ROLE_ADMIN AUTHORITY'">3ROLE_ADMIN</h1>
 	        <h1 sec:authorize="hasRole('ROLE_USER')">3.5ROLE_USER</h1>
 	        <h1 sec:authorize="hasAuthority('READ_CONTACT_PRIVILEGE')">4READ_CONTACT_PRIVILEGE</h1>
 	        <h1 sec:authorize="hasRole('ROLE_ADMIN') AND hasAuthority('READ_CONTACT_PRIVILEGE')">5ROLE_ADMIN AND READ_CONTACT_PRIVILEGE</h1>

@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{template :: headfiles}"></th:block>
+		<title>Agent Inventory - Customer List</title>
+		<style>
+			label.list-group-item {
+			    cursor: pointer;
+			}
+			.product-scroll-box {
+				min-height: 400px;
+			    max-height: 400px;   /* adjust to taste (300–400px is common) */
+			    overflow-y: auto;
+			}
+			
+			/* Optional polish */
+			.product-scroll-box .list-group-item {
+			    border-left: 0;
+			    border-right: 0;
+			}
+		</style>
+		<meta name="_csrf" th:content="${_csrf.token}">
+		<meta name="_csrf_header" th:content="${_csrf.headerName}">
+	</head>
+	<body>
+		<th:block th:replace="~{template :: menu}"></th:block>
+		<br>
+		<div class="container my-4">
+
+		    <!-- Page Title -->
+		    <h4 class="mb-3">Customer Product Assignment</h4>
+		
+		    <!-- Customer Selector -->
+		    <div class="mb-4">
+		        <label class="form-label fw-semibold">Select Customer</label>
+		        <select class="form-control" id="customerSelect">
+		            <option value="" disabled selected>-- Choose Customer --</option>
+		            <option th:each="c : ${res.customerList}"
+		            		th:value="${c.customerId}"
+		            		th:text="${c.customerCode} + ' - ' + ${c.customerName}">
+		            </option>
+		        </select>
+		    </div>
+		
+		    <div class="row">
+		
+		        <!-- LEFT SIDE: Available Products -->
+		        <div class="col-md-5">
+		            <div class="card shadow-sm">
+		                <div class="card-header">
+		                    <strong>Available Products</strong>
+		                </div>
+		                <div class="card-body">
+		
+		                    <!-- Search Bar -->
+		                    <input type="text" class="form-control mb-3" id="availableSearch" placeholder="Search...">
+		
+		                    <!-- List of Products -->
+		                    <div class="list-group product-scroll-box" id="availableProducts" style="max-height: 350px; overflow-y: auto;">
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		
+		        <!-- MIDDLE BUTTONS -->
+		        <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
+		
+		            <button class="btn btn-primary mb-2 w-75" id="btnAssign">
+		                Assign &raquo;
+		            </button>
+		
+		            <button class="btn btn-secondary w-75" id="btnRemove">
+		                &laquo; Remove
+		            </button>
+		
+		        </div>
+		
+		        <!-- RIGHT SIDE: Assigned Products -->
+		        <div class="col-md-5">
+		            <div class="card shadow-sm">
+		                <div class="card-header">
+		                    <strong>Assigned Products</strong>
+		                </div>
+		                <div class="card-body">
+		
+		                    <!-- Search Bar -->
+		                    <input type="text" class="form-control mb-3" id="assignedSearch" placeholder="Search...">
+		
+		                    <!-- Assigned Products List -->
+		                    <div class="list-group product-scroll-box" id="assignedProducts" style="max-height: 350px; overflow-y: auto;">
+		                    </div>
+		
+		                </div>
+		            </div>
+		        </div>
+		
+		    </div>
+		
+		    <!-- Save Button -->
+		    <div class="text-end mt-4">
+		        <button class="btn btn-success px-4" id="saveChangesBtn">Save Changes</button>
+		    </div>
+		
+		</div>
+		
+		<div class="toast-container position-fixed start-50 translate-middle p-3" style="top:90px; z-index:1100;">
+		    <div id="saveToast"
+		         class="toast border-0 bg-success text-white shadow-lg border-0"
+		         role="alert"
+		         aria-live="assertive"
+		         aria-atomic="true">
+		
+		        <div class="d-flex">
+		            <div class="toast-body fw-semibold fs-5 py-3 px-4 text-center">
+		                Saved successfully.
+		            </div>
+		            <button type="button"
+		                    class="btn-close btn-close-white me-2 m-auto"
+		                    data-bs-dismiss="toast"
+		                    aria-label="Close">
+		            </button>
+		        </div>
+		    </div>
+		</div>
+		
+		<th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
+		<script type="text/javascript" th:src="@{/js/customer/customer_product_assign.js}"></script>
+	</body>
+</HTML >

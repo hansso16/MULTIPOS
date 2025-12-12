@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{template :: headfiles}"></th:block>
+		<link rel="stylesheet" th:href="@{/css/customerinv/customerinv_input_form.css}" type="text/css" />
+		<title>Customer Inventory Form</title>
+	</head>
+	<body class="bg-light">
+		<th:block th:replace="~{template :: menu}"></th:block>
+		<div class="container py-2">
+		
+		    <h3 class="mb-4">Customer Inventory Encoding</h3>
+		
+		    <!-- FORM START -->
+		    <form th:action="@{/customerinventory/submit}" th:object="${form}" method="post">
+		        <!-- Hidden fields -->
+		        <input type="hidden" th:field="*{customerId}">
+		        <input type="hidden" th:field="*{agentId}">
+		
+				<div class="row mb-4 align-items-end">
+				    <!-- Visit Date -->
+				    <div class="col-md-2">
+				        <label class="form-label fw-semibold">Visit Date</label>
+				        <input type="text" class="form-control" th:value="${#temporals.format(form.visitDate, 'MMMM dd, yyyy')}" readonly required>
+				        <input type="hidden" th:field="${form.visitDate}" />
+				    </div>
+				</div>
+		
+		        <!-- PRODUCT TABLE -->
+		        <div class="card shadow-sm">
+		            <div class="card-header">
+		                <strong>Assigned Products</strong>
+		            </div>
+		
+		            <div class="table-container inventory-list-box">
+		                <table class="table table-bordered align-middle">
+		                    <thead>
+		                        <tr>
+		                            <th style="width: 20%">Product</th>
+		                            <th style="width: 10%">Beginning<br><small>Case / Pieces</small></th>
+		                            <th style="width: 10%">Delivery Qty<br><small>Case / Pieces</small></th>
+		                            <th style="width: 10%">Delivery Date</th>
+		                            <th style="width: 10%">Ending<br><small>Case / Pieces</small></th>
+		                            <th style="width: 10%" th:if="${form.readOnly}">Suggested<br><small>Case / Pieces</small></th>
+		                        </tr>
+		                    </thead>
+		
+		                    <tbody>
+		                        <tr th:each="item, i : *{items}">
+		                            <!-- PRODUCT DETAILS -->
+		                            <td>
+			                            <!-- Hidden productId -->
+			                            <input type="hidden" th:field="*{items[__${i.index}__].productId}">
+			                            <input type="hidden" th:field="*{items[__${i.index}__].productCode}">
+			                            <input type="hidden" th:field="*{items[__${i.index}__].productName}">
+		                                <span th:text="${item.productName}"></span>
+		                                <br>
+		                                <small class="text-muted" th:text="${item.productCode}"></small>
+		                            </td>
+		
+		                            <!-- BEGINNING QTY -->
+		                           <td>
+		                           		<div class="d-flex align-items-center">
+							                <input type="number"
+							                       th:field="*{items[__${i.index}__].beginningCase}"
+							                       class="form-control me-1"
+							                       min="0"
+							                       th:readonly="${item.beginningLocked}">
+							                /
+							                <input type="number"
+							                       th:field="*{items[__${i.index}__].beginningPiece}"
+							                       class="form-control ms-1"
+							                       min="0"
+							                       th:readonly="${item.beginningLocked}">
+				                       </div>
+						            </td>
+						            
+		                            <!-- DELIVERY QTY -->
+						            <td>
+									    <div class="d-flex align-items-center">
+									        <input type="number"
+									               th:field="*{items[__${i.index}__].deliveryCase}"
+									               class="form-control me-1"
+									               min="0" 
+									               th:readonly="${item.readOnly}"/>
+									
+									        <span class="mx-1">/</span>
+									
+									        <input type="number"
+									               th:field="*{items[__${i.index}__].deliveryPiece}"
+									               class="form-control ms-1"
+									               min="0" 
+									               th:readonly="${item.readOnly}"/>
+									    </div>
+									</td>
+		
+		
+		                            <!-- DELIVERY DATE -->
+		                            <td>
+		                                <input type="date"
+		                                       class="form-control"
+		                                       th:name="'items[' + ${i.index} + '].deliveryDate'"
+		                                       th:value="${item.deliveryDate}"
+		                                       th:readonly="${item.readOnly}"/>
+		                            </td>
+		
+		                            <!-- ENDING QTY -->
+		                            <td>
+		                            	<div class="d-flex align-items-center">
+						                <input type="number"
+						                       th:field="*{items[__${i.index}__].endingCase}"
+						                       class="form-control me-1"
+						                       min="0"
+						                       th:readonly="${item.readOnly}"/>
+						                /
+						                <input type="number"
+						                       th:field="*{items[__${i.index}__].endingPiece}"
+						                       class="form-control ms-1"
+						                       min="0"
+						                       th:readonly="${item.readOnly}"/>
+						                </div>
+						            </td>
+						            
+						            <!-- SUGGESTED ORDER -->
+									<td class="d-flex align-items-center" th:if="${form.readOnly}">
+									
+									    <input type="number"
+									           class="form-control me-1"
+									           th:value="${item.suggestedCase}"
+									           readonly>
+									
+									    /
+									
+									    <input type="number"
+									           class="form-control ms-1"
+									           th:value="${item.suggestedPiece}"
+									           readonly>
+									
+									</td>
+		                        </tr>
+		                    </tbody>
+		                </table>
+		            </div>
+		        </div>
+		
+		        <!-- SUBMIT BUTTON -->
+		        <div class="text-end mt-4" th:if="${!form.readOnly}">
+		            <button class="btn btn-primary px-4" type="submit">Submit Inventory</button>
+		        </div>
+		
+		    </form>
+		    <!-- FORM END -->
+		
+		</div>
+		
+		<th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
+		<script type="text/javascript" th:src="@{/js/customerinv/customerinv_input_form.js}"></script>
+	</body>
+</HTML >
