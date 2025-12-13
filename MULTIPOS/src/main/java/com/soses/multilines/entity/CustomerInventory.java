@@ -15,10 +15,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="customer_inventory")
+@NamedQuery(name="CustomerInventory.findAll", query="SELECT ci FROM CustomerInventory ci")
 public class CustomerInventory implements Serializable {
 
 	private static final long serialVersionUID = 5996528358278924049L;

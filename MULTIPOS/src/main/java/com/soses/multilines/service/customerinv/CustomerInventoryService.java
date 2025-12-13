@@ -12,6 +12,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.soses.multilines.common.GeneralUtil;
 import com.soses.multilines.dto.CustomerInventoryForm;
 import com.soses.multilines.dto.CustomerProductFormDTO;
 import com.soses.multilines.entity.CustomerInventory;
@@ -91,15 +92,15 @@ public class CustomerInventoryService {
             entity.setProduct(productService.findById(item.getProductId()));
 
             // inventory fields
-            entity.setBeginningCase(item.getBeginningCase());
-            entity.setBeginningPiece(item.getBeginningPiece());
+            entity.setBeginningCase(GeneralUtil.nvl(item.getBeginningCase()));
+            entity.setBeginningPiece(GeneralUtil.nvl(item.getBeginningPiece()));
 
-            entity.setDeliveryCase(item.getDeliveryCase());
-            entity.setDeliveryPiece(item.getDeliveryPiece());
+            entity.setDeliveryCase(GeneralUtil.nvl(item.getDeliveryCase()));
+            entity.setDeliveryPiece(GeneralUtil.nvl(item.getDeliveryPiece()));
             entity.setDeliveryDate(item.getDeliveryDate());
 
-            entity.setEndingCase(item.getEndingCase());
-            entity.setEndingPiece(item.getEndingPiece());
+            entity.setEndingCase(GeneralUtil.nvl(item.getEndingCase()));
+            entity.setEndingPiece(GeneralUtil.nvl(item.getEndingPiece()));
 
             // metadata
             entity.setEntryTimestamp(LocalDateTime.now());

@@ -8,11 +8,35 @@ package com.soses.multilines.api;
  */
 public class BaseSearchRequest {
 
+	private String search = "";
+	
 	/** The size. */
 	private String size;
 	
 	/** The page. */
 	private String page;
+
+	public BaseSearchRequest() {} 
+	
+	public BaseSearchRequest(String search, String size, String page) {
+		super();
+		this.search = search;
+		this.size = size;
+		this.page = page;
+	}
+
+	@Override
+	public String toString() {
+		return "BaseSearchRequest [search=" + search + ", size=" + size + ", page=" + page + "]";
+	}
+
+	public String getSearch() {
+		return search;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
 
 	/**
 	 * Gets the size.

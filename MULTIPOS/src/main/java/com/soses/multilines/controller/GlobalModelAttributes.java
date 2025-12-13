@@ -10,6 +10,6 @@ public class GlobalModelAttributes {
 
 	@ModelAttribute("contextPath")
     public String contextPath(HttpServletRequest request) {
-        return request.getContextPath();
+        return request.getRequestURI().toString();
     }
 }

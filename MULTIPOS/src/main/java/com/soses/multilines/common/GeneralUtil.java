@@ -38,4 +38,8 @@ public class GeneralUtil {
 	public static LocalDate stringToLocalDate(String date) {
 		return LocalDate.parse(date, dateFormatter);
 	}
+	
+	public static Integer nvl(Integer value) {
+		return value == null? 0 : value;
+	}
 }

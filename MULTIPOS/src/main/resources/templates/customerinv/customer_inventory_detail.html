@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{template :: headfiles}"></th:block>
+		<title>Customer Inventory Visit Details</title>
+	</head>
+	<body class="bg-light">
+		<th:block th:replace="~{template :: menu}"></th:block>
+		<div class="container py-2">
+
+			<h4>Inventory Visit Details</h4>
+
+			<div class="mb-3">
+			    <strong>Customer:</strong> <span th:text="${customer.customerName}"></span><br>
+			    <strong>Agent:</strong> <span th:text="${agent.agentCode}"></span><br>
+			    <strong>Visit Date:</strong>
+			    <span th:text="${#temporals.format(form.visitDate, 'MMMM dd, yyyy')}"></span>
+			</div>
+
+			<div class="table-responsive" style="max-height:calc(100vh - 320px); overflow-y:auto;">
+				<table class="table table-bordered">
+				    <thead class="table-light sticky-top">
+				    <tr>
+				        <th>Product</th>
+				        <th>Beginning</th>
+				        <th>Delivery</th>
+				        <th>Delivery Date</th>
+				        <th>Ending</th>
+				        <th>Suggested</th>
+				    </tr>
+				    </thead>
+				    <tbody>
+				    <tr th:each="i : ${form.items}">
+				        <td>
+				            <strong th:text="${i.productName}"></strong><br>
+				            <small th:text="${i.productCode}"></small>
+				        </td>
+				        <td><span th:text="${i.beginningCase}"></span> / <span th:text="${i.beginningPiece}"></span></td>
+				        <td th:text="${i.deliveryCase} + ' / ' + ${i.deliveryPiece}"></td>
+				        <td th:text="${#temporals.format(i.deliveryDate, 'MM/dd/yyyy')}"></td>
+				        <td th:text="${i.endingCase} + ' / ' + ${i.endingPiece}"></td>
+				        <td class="fw-bold text-primary"
+				            th:text="${i.suggestedCase} + ' / ' + ${i.suggestedPiece}">
+				        </td>
+				    </tr>
+				    </tbody>
+				</table>
+			</div>
+
+			<div class="d-flex justify-content-between align-items-center mb-3">
+			    <a class="btn btn-primary" th:href="@{/customer/inventory}" th:text="'Go Back'"></a>
+				<form th:action="@{/customer/inventory/visit/delete}" method="post"
+				      onsubmit="return confirm('Delete this visit?');">
+				    <input type="hidden" name="agentId" th:value="${agent.agentId}">
+				    <input type="hidden" name="customerId" th:value="${customer.customerId}">
+				    <input type="hidden" name="visitDate" th:value="${form.visitDate}">
+				    <button class="btn btn-danger">Delete Visit</button>
+				</form>
+			</div>
+		</div>
+		
+		<th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
+	</body>
+</HTML >

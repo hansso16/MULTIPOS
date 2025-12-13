@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         container.innerHTML = "";
 
         if (!products || products.length === 0) {
-            container.innerHTML = `<div class="text-muted small p-2">No products</div>`;
+            //container.innerHTML = `<div class="text-muted small p-2">No products</div>`;
             return;
         }
 

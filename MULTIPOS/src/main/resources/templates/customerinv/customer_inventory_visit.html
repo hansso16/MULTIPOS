@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{template :: headfiles}"></th:block>
+		<title>Customer Inventory Visit</title>
+	</head>
+	<body>
+		<th:block th:replace="~{template :: menu}"></th:block>
+		<br>
+		<div class="container">
+			<!-- Page Title -->
+			    <h3 class="mb-4">Customer Inventory Visits</h3>
+
+				<div th:if="${successMessage}"
+				     class="alert alert-success alert-dismissible fade show"
+				     role="alert">
+				    <span th:text="${successMessage}"></span>
+				    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+
+				<!-- ERROR MESSAGE -->
+				<div th:if="${errorMessage}"
+				     class="alert alert-danger alert-dismissible fade show"
+				     role="alert">
+				    <span th:text="${errorMessage}"></span>
+				    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+				
+				<div class="d-flex justify-content-center">
+		        	<form class="d-inline-flex" action="#" th:action="@{/customer/inventory}" method="GET" >
+				      	<div class="input-group">
+				      		<div class="form-outline">
+				      			<input class="form-control rounded" type="search" placeholder="Search Customer" 
+				      				name="search" th:value="${search}" aria-label="Search" autocomplete="off" >
+				      		</div>
+				      		<button class="btn btn-outline-primary" type="submit">Search</button >
+				      	</div>
+			      	</form>
+				</div>
+				<br>
+			    <!-- Table Card -->
+			    <div class="card shadow-sm">
+			        <div class="card-body">
+
+			            <div class="table-responsive">
+			                <table class="table table-hover align-middle">
+			                    <thead class="table-light">
+			                        <tr>
+			                            <th>Visit Date</th>
+			                            <th>Customer</th>
+			                            <th>Agent</th>
+			                            <th class="text-center"># Products</th>
+			                            <th class="text-end">Action</th>
+			                        </tr>
+			                    </thead>
+
+			                    <tbody>
+			                        <tr th:each="v : ${page.content}">
+			                            <!-- Visit Date -->
+			                            <td th:text="${#temporals.format(v.visitDate, 'MMM dd, yyyy')}"></td>
+
+			                            <!-- Customer -->
+			                            <td>
+			                                <div class="fw-semibold" th:text="${v.customerName}"></div>
+			                                <small class="text-muted" th:text="${v.customerCode}"></small>
+			                            </td>
+
+			                            <!-- Agent -->
+			                            <td>
+			                                <span th:text="${v.agentCode}"></span>
+			                            </td>
+
+			                            <!-- Product Count -->
+			                            <td class="text-center">
+			                                <span class="badge bg-secondary"
+			                                      th:text="${v.productCount}">
+			                                </span>
+			                            </td>
+
+			                            <!-- Actions -->
+			                            <td class="text-end">
+			                                <a class="btn btn-sm btn-outline-primary"
+			                                   th:href="@{/customer/inventory/{customerId}/{agentId}/{visitDate}(
+			                                       customerId=${v.customerId},
+			                                       agentId=${v.agentId},
+			                                       visitDate=${v.visitDate}
+			                                   )}">
+			                                    View
+			                                </a>
+
+											<form th:action="@{/customer/inventory/visit/delete}" method="post"
+											      onsubmit="return confirm('Delete this visit?');">
+											    <input type="hidden" name="agentId" th:value="${v.agentId}">
+											    <input type="hidden" name="customerId" th:value="${v.customerId}">
+											    <input type="hidden" name="visitDate" th:value="${v.visitDate}">
+											    <button class="btn btn-sm btn-outline-danger ms-1">Delete</button>
+											</form>
+			                            </td>
+			                        </tr>
+
+			                        <!-- Empty state -->
+			                        <tr th:if="${page.content.isEmpty()}">
+			                            <td colspan="5" class="text-center text-muted py-4">
+			                                No inventory records found
+			                            </td>
+			                        </tr>
+			                    </tbody>
+			                </table>
+			            </div>
+
+			            <!-- Pagination -->
+			            <nav th:if="${page.totalPages < 0}">
+			                <ul class="pagination justify-content-end">
+
+			                    <li class="page-item"
+			                        th:classappend="${page.first} ? 'disabled'">
+			                        <a class="page-link"
+			                           th:href="@{/backoffice/inventory(page=${page.number - 1})}">
+			                            Previous
+			                        </a>
+			                    </li>
+
+			                    <li class="page-item"
+			                        th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+			                        th:classappend="${i == page.number} ? 'active'">
+			                        <a class="page-link"
+			                           th:text="${i + 1}"
+			                           th:href="@{/backoffice/inventory(page=${i})}">
+			                        </a>
+			                    </li>
+
+			                    <li class="page-item"
+			                        th:classappend="${page.last} ? 'disabled'">
+			                        <a class="page-link"
+			                           th:href="@{/backoffice/inventory(page=${page.number + 1})}">
+			                            Next
+			                        </a>
+			                    </li>
+
+			                </ul>
+			            </nav>
+
+			        </div>
+			    </div>
+			<th:block th:replace="~{template :: pagination(searchName='customerId', searchValue=${customerId})}"></th:block>
+		</div>
+		
+		<th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
+	</body>
+</HTML >
