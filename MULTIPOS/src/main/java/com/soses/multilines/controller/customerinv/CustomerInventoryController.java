@@ -56,7 +56,7 @@ private static final Logger log = LoggerFactory.getLogger(CustomerInventoryContr
 		// 1. Validate agent → must exist
 		Integer userid = userService.getUserId(principal.getName());
         Agent agent = agentService.findByUserId(userid);
-        LocalDate visitDate = LocalDate.now().plusDays(1);
+        LocalDate visitDate = LocalDate.now();
         List<CustomerProductFormDTO> dtoList = null;
         
         // 2. Check if today's record already exists
