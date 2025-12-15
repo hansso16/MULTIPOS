@@ -85,7 +85,7 @@ public class CustomerInventoryViewController extends BaseSearchController {
         dto.setAgentId(agentId);
         dto.setVisitDate(visitDate);
 
-        dtoList = ciService.convertToReadOnlyDTO(todayInventory);
+        dtoList = ciService.convertToReadOnlyDTO(todayInventory, visitDate);
         dto.setItems(dtoList);
         dto.setReadOnly(true);
         

@@ -75,13 +75,24 @@ private static final Logger log = LoggerFactory.getLogger(CustomerInventoryContr
         	dtoList = inventoryService.getPreviousCycleInventoryMap(customerId, assignedProducts);
         	dto.setItems(dtoList);
         } else {
-        	dtoList = inventoryService.convertToReadOnlyDTO(todayInventory);
+        	dtoList = inventoryService.convertToReadOnlyDTO(todayInventory, visitDate);
         	dto.setItems(dtoList);
+        	dto.setComputed(true);
         	dto.setReadOnly(true);
         }
         
         model.addAttribute("agent", agent);
         model.addAttribute("form", dto);
+
+        return "customerinv/customerinv_input_form";
+	}
+	
+	@PostMapping("/customerinventory/compute")
+	public String computeInventoryForm(@ModelAttribute CustomerInventoryForm form, Model model, Principal principal) {
+		log.info("ENTER: computeInventoryForm(form,agentId,model)");
+		
+        form = inventoryService.computeSuggestedOrder(form);
+        model.addAttribute("form", form);
 
         return "customerinv/customerinv_input_form";
 	}
@@ -110,7 +121,7 @@ private static final Logger log = LoggerFactory.getLogger(CustomerInventoryContr
 	            inventoryService.getInventoryForVisit(customerId, visitDate);
 		
 		// 5. Convert saved records to DTO for read only rendering
-		List<CustomerProductFormDTO> dtoList = inventoryService.convertToReadOnlyDTO(savedRecords);
+		List<CustomerProductFormDTO> dtoList = inventoryService.convertToReadOnlyDTO(savedRecords, visitDate);
 		
 		
 		CustomerInventoryForm readOnlyForm = new CustomerInventoryForm();
@@ -119,6 +130,7 @@ private static final Logger log = LoggerFactory.getLogger(CustomerInventoryContr
 		readOnlyForm.setVisitDate(visitDate);
 		readOnlyForm.setItems(dtoList);
 		readOnlyForm.setReadOnly(true);
+		readOnlyForm.setComputed(true);
 		
 		model.addAttribute("customer", customer);
 	    model.addAttribute("agent", agent);

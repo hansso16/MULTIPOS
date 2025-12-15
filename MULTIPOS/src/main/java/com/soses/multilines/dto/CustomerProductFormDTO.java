@@ -23,8 +23,43 @@ public class CustomerProductFormDTO {
     private Integer suggestedCase;
     private Integer suggestedPiece;
     
+    private Integer finalCase;
+    private Integer finalPiece;
+    
     private boolean beginningLocked = false;
     private boolean readOnly = false;
+    
+    private Integer count;
+
+	public Integer getFinalCase() {
+		return finalCase;
+	}
+
+
+	public void setFinalCase(Integer finalCase) {
+		this.finalCase = finalCase;
+	}
+
+
+	public Integer getFinalPiece() {
+		return finalPiece;
+	}
+
+
+	public void setFinalPiece(Integer finalPiece) {
+		this.finalPiece = finalPiece;
+	}
+
+
+	public Integer getCount() {
+		return count;
+	}
+
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
 
 	public Integer getProductId() {
 		return productId;
@@ -172,8 +207,9 @@ public class CustomerProductFormDTO {
 				+ productName + ", beginningCase=" + beginningCase + ", beginningPiece=" + beginningPiece
 				+ ", deliveryCase=" + deliveryCase + ", deliveryPiece=" + deliveryPiece + ", deliveryDate="
 				+ deliveryDate + ", endingCase=" + endingCase + ", endingPiece=" + endingPiece + ", suggestedCase="
-				+ suggestedCase + ", suggestedPiece=" + suggestedPiece + ", beginningLocked=" + beginningLocked
-				+ ", readOnly=" + readOnly + "]";
+				+ suggestedCase + ", suggestedPiece=" + suggestedPiece + ", finalCase=" + finalCase + ", finalPiece="
+				+ finalPiece + ", beginningLocked=" + beginningLocked + ", readOnly=" + readOnly + ", count=" + count
+				+ "]";
 	}
 	
 	

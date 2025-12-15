@@ -11,9 +11,40 @@ public class CustomerInventoryForm {
     
     private LocalDate visitDate;
     
+    private Integer count;
+    
+    private Integer frequency;
+    
     private boolean readOnly = false;
     
+    private boolean computed = false;
+
     private List<CustomerProductFormDTO> items;
+    
+    public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public Integer getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(Integer frequency) {
+		this.frequency = frequency;
+	}
+
+	public boolean isComputed() {
+		return computed;
+	}
+
+	public void setComputed(boolean computed) {
+		this.computed = computed;
+	}
+
 
 	public Integer getCustomerId() {
 		return customerId;
@@ -58,6 +89,7 @@ public class CustomerInventoryForm {
 	@Override
 	public String toString() {
 		return "CustomerInventoryForm [customerId=" + customerId + ", agentId=" + agentId + ", visitDate=" + visitDate
-				+ ", readOnly=" + readOnly + ", items=" + items + "]";
+				+ ", count=" + count + ", frequency=" + frequency + ", readOnly=" + readOnly + ", computed=" + computed
+				+ ", items=" + items + "]";
 	}
 }

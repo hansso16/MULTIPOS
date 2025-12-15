@@ -9,10 +9,22 @@
 		<th:block th:replace="~{template :: menu}"></th:block>
 		<div class="container py-2">
 		
-		    <h3 class="mb-4">Customer Inventory Encoding</h3>
+		    <h3 class="">Customer Inventory Encoding</h3>
+		    <span class="badge bg-warning"
+			      th:if="${!form.readOnly}">
+			    Step 1: Encode Inventory
+			</span>
+			
+			<span class="badge bg-success"
+			      th:if="${form.readOnly}">
+			    Step 2: Final Order
+			</span>
+					    
 		
 		    <!-- FORM START -->
-		    <form th:action="@{/customerinventory/submit}" th:object="${form}" method="post">
+		    <form th:action="${!form.computed} 
+			        ? @{/customerinventory/compute} 
+			        : @{/customerinventory/submit}" th:object="${form}" method="post">
 		        <!-- Hidden fields -->
 		        <input type="hidden" th:field="*{customerId}">
 		        <input type="hidden" th:field="*{agentId}">
@@ -37,11 +49,13 @@
 		                    <thead>
 		                        <tr>
 		                            <th style="width: 20%">Product</th>
-		                            <th style="width: 10%">Beginning<br><small>Case / Pieces</small></th>
-		                            <th style="width: 10%">Delivery Qty<br><small>Case / Pieces</small></th>
+		                            <th style="width: 10%">Beginning<br><small>Case / Pcs</small></th>
+		                            <th style="width: 10%">Delivery Qty<br><small>Case / Pcs</small></th>
 		                            <th style="width: 10%">Delivery Date</th>
 		                            <th style="width: 10%">Ending<br><small>Case / Pieces</small></th>
-		                            <th style="width: 10%" th:if="${form.readOnly}">Suggested<br><small>Case / Pieces</small></th>
+		                            <th style="width: 10%" th:if="${form.computed}">Suggested<br><small>Case / Pcs</small></th>
+		                            <th style="width: 10%" th:if="${form.computed}">Final<br><small>Case / Pcs</small></th>
+		                            
 		                        </tr>
 		                    </thead>
 		
@@ -122,29 +136,50 @@
 						            </td>
 						            
 						            <!-- SUGGESTED ORDER -->
-									<td class="d-flex align-items-center" th:if="${form.readOnly}">
-									
-									    <input type="number"
-									           class="form-control me-1"
-									           th:value="${item.suggestedCase}"
-									           readonly>
-									
-									    /
-									
-									    <input type="number"
-									           class="form-control ms-1"
-									           th:value="${item.suggestedPiece}"
-									           readonly>
-									
+									<td th:if="${form.computed}">
+										<div class="d-flex align-items-center">
+										    <input type="number"
+										           class="form-control me-1"
+										           th:value="${item.suggestedCase}"
+										           readonly/>
+										    /
+										    <input type="number"
+										           class="form-control ms-1"
+										           th:value="${item.suggestedPiece}"
+										           readonly/>
+										</div>
 									</td>
+									
+						            <!-- FINAL ORDER -->
+									<td th:if="${form.computed}">
+										<div class="d-flex align-items-center">
+									        <input type="number"
+									               class="form-control me-1"
+									               th:field="*{items[__${i.index}__].finalCase}"
+									               min="0"
+									               th:readonly="${form.readOnly}"/>
+									        /
+									        <input type="number"
+									               class="form-control ms-1"
+									               th:field="*{items[__${i.index}__].finalPiece}"
+									               min="0"
+									               th:readonly="${form.readOnly}"/>
+										</div>
+								    </td>
 		                        </tr>
 		                    </tbody>
 		                </table>
 		            </div>
 		        </div>
 		
+				<div class="text-end mt-3" th:if="${!form.computed}">
+				    <button type="submit"
+				            class="btn btn-primary">
+				        Compute Suggested Order
+				    </button>
+				</div>
 		        <!-- SUBMIT BUTTON -->
-		        <div class="text-end mt-4" th:if="${!form.readOnly}">
+		        <div class="text-end mt-4" th:if="${!form.readOnly && form.computed}">
 		            <button class="btn btn-primary px-4" type="submit">Submit Inventory</button>
 		        </div>
 		

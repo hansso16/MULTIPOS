@@ -62,6 +62,12 @@ public class CustomerInventory implements Serializable {
 
     @Column(name = "ending_piece")
     private Integer endingPiece = 0;
+    
+    @Column(name = "final_case")
+    private Integer finalCase = 0;
+
+    @Column(name = "final_piece")
+    private Integer finalPiece = 0;
 
     @Column(name = "delivery_date")
     private LocalDate deliveryDate;
@@ -82,6 +88,22 @@ public class CustomerInventory implements Serializable {
 
 	public CustomerInventoryPK getId() {
 		return id;
+	}
+	
+	public Integer getFinalCase() {
+		return finalCase;
+	}
+
+	public void setFinalCase(Integer finalCase) {
+		this.finalCase = finalCase;
+	}
+
+	public Integer getFinalPiece() {
+		return finalPiece;
+	}
+
+	public void setFinalPiece(Integer finalPiece) {
+		this.finalPiece = finalPiece;
 	}
 
 	public void setId(CustomerInventoryPK id) {
@@ -197,8 +219,9 @@ public class CustomerInventory implements Serializable {
 		return "CustomerInventory [id=" + id + ", agent=" + agent + ", customer=" + customer + ", product=" + product
 				+ ", beginningCase=" + beginningCase + ", beginningPiece=" + beginningPiece + ", deliveryCase="
 				+ deliveryCase + ", deliveryPiece=" + deliveryPiece + ", endingCase=" + endingCase + ", endingPiece="
-				+ endingPiece + ", deliveryDate=" + deliveryDate + ", unitMode=" + unitMode + ", entryTimestamp="
-				+ entryTimestamp + ", submittedBy=" + submittedBy + "]";
+				+ endingPiece + ", finalCase=" + finalCase + ", finalPiece=" + finalPiece + ", deliveryDate="
+				+ deliveryDate + ", unitMode=" + unitMode + ", entryTimestamp=" + entryTimestamp + ", submittedBy="
+				+ submittedBy + "]";
 	}
 
 	public CustomerInventory(CustomerInventoryPK id, Agent agent, Customer customer, Product product,
