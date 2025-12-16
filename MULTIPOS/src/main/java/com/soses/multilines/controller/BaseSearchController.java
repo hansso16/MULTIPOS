@@ -10,5 +10,9 @@ public abstract class BaseSearchController {
 		model.addAttribute("page", page);
 		model.addAttribute("totalPages", page.getTotalPages());
 		model.addAttribute("totalRows", page.getTotalElements());
+		
+		int window = 2;
+		model.addAttribute("startPage", Math.max(1,  (page.getNumber() + 1) - window));
+		model.addAttribute("endPage", Math.min(page.getTotalPages(), (page.getNumber() + 1) + window));
 	}
 }

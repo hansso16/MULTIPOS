@@ -34,7 +34,7 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
 		String customerId = request.getCustomerId();
 		Page<Customer> customerPage = null;
 		
-		int pageSize = 5;
+		int pageSize = 15;
 		if (!StringUtil.isEmpty(request.getSize())) {
 			pageSize = Integer.parseInt(request.getSize());
 		}
