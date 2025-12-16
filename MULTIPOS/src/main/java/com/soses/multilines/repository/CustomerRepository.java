@@ -26,5 +26,23 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     """)
     List<Customer> findAvailableForAgent(@Param("agentId") String agentId);
 	
+	
+	@Query("""
+        SELECT c FROM Customer c
+        WHERE 
+			(
+				:searchText IS NULL
+	            OR :searchText = ''
+	            OR c.customerCode LIKE CONCAT('%', :searchText, '%')
+	            OR c.customerName LIKE CONCAT('%', :searchText, '%')
+			) AND
+			c.id IN (
+	            SELECT ac.id.customerId
+	            FROM AgentCustomer ac
+	            WHERE ac.id.agentId = :agentId
+			)
+    """)
+    Page<Customer> findAssignedForAgent(@Param("agentId") Integer agentId, @Param("searchText") String searchText, Pageable page);
+	
 
 }

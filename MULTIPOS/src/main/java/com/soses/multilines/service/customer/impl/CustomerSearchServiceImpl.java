@@ -52,10 +52,23 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
 		return customerPage;
 	}
 	
-	public Page<Customer> searchCustomerByAgent(CustomerSearchRequest request) {
+	public Page<Customer> searchCustomerByAgent(CustomerSearchRequest request, Integer agentId) {
 		
+		String searchText = request.getSearch();
+		Page<Customer> customerPage = null;
 		
-		return null;
+		int pageSize = 15;
+		if (!StringUtil.isEmpty(request.getSize())) {
+			pageSize = Integer.parseInt(request.getSize());
+		}
+		int currentPage = 0;
+		if (!StringUtil.isEmpty(request.getPage())) {
+			currentPage = Integer.parseInt(request.getPage()) - 1;
+		}
+		Pageable page = PageRequest.of(currentPage, pageSize);
+		
+		customerPage = customerRepo.findAssignedForAgent(agentId, searchText, page);
+		return customerPage;
 	}
 
 }
