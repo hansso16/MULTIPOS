@@ -7,7 +7,7 @@
 		<th:block th:replace="~{template :: menu}"></th:block>
 		<br>
 		<div class="container">
-			<div sec:authorize="isAuthenticated()">
+			<!--<div sec:authorize="isAuthenticated()">
 		        <h1>1isAuthenticated()</h1>
 			</div>
 			<div sec:authorize="isAnonymous()">
@@ -26,7 +26,7 @@
 	        <h1 sec:authorize="hasRole('ROLE_USER') OR hasAuthority('READ_CONTACT_PRIVILEGE')">9ROLE_USER OR READ_CONTACT_PRIVILEGE</h1>
 	        <h1 sec:authorize="hasRole('ROLE_ADMIN') OR hasAuthority('WRITE_CONTACT_PRIVILEGE')">10ROLE_ADMIN OR WRITE_CONTACT_PRIVILEGE</h1>
 	        <h1></h1>
-	        <h1></h1>
+	        <h1></h1>-->
 	    </div>
 	    
 	    <th:block th:replace="~{template :: footer}"></th:block >

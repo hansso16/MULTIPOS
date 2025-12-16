@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:/properties/${spring_profiles_active}/database.properties")
 public class DatabaseProperties {
-
+	
 	@Value("${db.driverClassName}")
     protected String driverClassName;
 

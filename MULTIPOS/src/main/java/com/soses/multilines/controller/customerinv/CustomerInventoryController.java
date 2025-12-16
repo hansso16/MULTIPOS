@@ -56,6 +56,7 @@ private static final Logger log = LoggerFactory.getLogger(CustomerInventoryContr
 		// 1. Validate agent → must exist
 		Integer userid = userService.getUserId(principal.getName());
         Agent agent = agentService.findByUserId(userid);
+        Customer customer = customerService.findById(customerId);
         LocalDate visitDate = LocalDate.now();
         List<CustomerProductFormDTO> dtoList = null;
         
@@ -67,6 +68,7 @@ private static final Logger log = LoggerFactory.getLogger(CustomerInventoryContr
         dto.setCustomerId(customerId);
         dto.setAgentId(agent.getAgentId());
         dto.setVisitDate(visitDate);
+        dto.setFrequency(customer.getFrequency());
 
         if (todayInventory.isEmpty()) {
         	//Customer customer = customerService.findById(customerId);
@@ -129,6 +131,7 @@ private static final Logger log = LoggerFactory.getLogger(CustomerInventoryContr
 		readOnlyForm.setAgentId(agentId);
 		readOnlyForm.setVisitDate(visitDate);
 		readOnlyForm.setItems(dtoList);
+		readOnlyForm.setFrequency(customer.getFrequency());
 		readOnlyForm.setReadOnly(true);
 		readOnlyForm.setComputed(true);
 		

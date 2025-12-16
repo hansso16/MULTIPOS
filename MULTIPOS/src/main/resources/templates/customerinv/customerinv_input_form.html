@@ -28,6 +28,7 @@
 		        <!-- Hidden fields -->
 		        <input type="hidden" th:field="*{customerId}">
 		        <input type="hidden" th:field="*{agentId}">
+		        <input type="hidden" th:field="*{frequency}">
 		
 				<div class="row mb-4 align-items-end">
 				    <!-- Visit Date -->
@@ -35,6 +36,11 @@
 				        <label class="form-label fw-semibold">Visit Date</label>
 				        <input type="text" class="form-control" th:value="${#temporals.format(form.visitDate, 'MMMM dd, yyyy')}" readonly required>
 				        <input type="hidden" th:field="${form.visitDate}" />
+				    </div>
+				    <div class="col-md-2">
+				        <label class="form-label fw-semibold">Frequency (days)</label>
+				        <input type="text" class="form-control" th:value="${form.frequency}" readonly required>
+				        <input type="hidden" th:field="*{frequency}" />
 				    </div>
 				</div>
 		
@@ -67,9 +73,10 @@
 			                            <input type="hidden" th:field="*{items[__${i.index}__].productId}">
 			                            <input type="hidden" th:field="*{items[__${i.index}__].productCode}">
 			                            <input type="hidden" th:field="*{items[__${i.index}__].productName}">
-		                                <span th:text="${item.productName}"></span>
+										<input type="hidden" th:field="*{items[__${i.index}__].count}">
+		                                <span th:text="${item.productCode}"></span>
 		                                <br>
-		                                <small class="text-muted" th:text="${item.productCode}"></small>
+		                                <small class="text-muted" th:text="${item.productName} + ' - 1/' + ${item.count}"></small>
 		                            </td>
 		
 		                            <!-- BEGINNING QTY -->
@@ -79,13 +86,13 @@
 							                       th:field="*{items[__${i.index}__].beginningCase}"
 							                       class="form-control me-1"
 							                       min="0"
-							                       th:readonly="${item.beginningLocked}">
+							                       th:readonly="${item.beginningLocked}" required/>
 							                /
 							                <input type="number"
 							                       th:field="*{items[__${i.index}__].beginningPiece}"
 							                       class="form-control ms-1"
 							                       min="0"
-							                       th:readonly="${item.beginningLocked}">
+							                       th:readonly="${item.beginningLocked}" required/>
 				                       </div>
 						            </td>
 						            
@@ -96,7 +103,7 @@
 									               th:field="*{items[__${i.index}__].deliveryCase}"
 									               class="form-control me-1"
 									               min="0" 
-									               th:readonly="${item.readOnly}"/>
+									               th:readonly="${item.readOnly}" required/>
 									
 									        <span class="mx-1">/</span>
 									
@@ -104,7 +111,7 @@
 									               th:field="*{items[__${i.index}__].deliveryPiece}"
 									               class="form-control ms-1"
 									               min="0" 
-									               th:readonly="${item.readOnly}"/>
+									               th:readonly="${item.readOnly}" required/>
 									    </div>
 									</td>
 		
@@ -125,13 +132,13 @@
 						                       th:field="*{items[__${i.index}__].endingCase}"
 						                       class="form-control me-1"
 						                       min="0"
-						                       th:readonly="${item.readOnly}"/>
+						                       th:readonly="${item.readOnly}" required/>
 						                /
 						                <input type="number"
 						                       th:field="*{items[__${i.index}__].endingPiece}"
 						                       class="form-control ms-1"
 						                       min="0"
-						                       th:readonly="${item.readOnly}"/>
+						                       th:readonly="${item.readOnly}" required/>
 						                </div>
 						            </td>
 						            
@@ -157,13 +164,13 @@
 									               class="form-control me-1"
 									               th:field="*{items[__${i.index}__].finalCase}"
 									               min="0"
-									               th:readonly="${form.readOnly}"/>
+									               th:readonly="${form.readOnly}" required/>
 									        /
 									        <input type="number"
 									               class="form-control ms-1"
 									               th:field="*{items[__${i.index}__].finalPiece}"
 									               min="0"
-									               th:readonly="${form.readOnly}"/>
+									               th:readonly="${form.readOnly}" required/>
 										</div>
 								    </td>
 		                        </tr>
@@ -172,16 +179,19 @@
 		            </div>
 		        </div>
 		
-				<div class="text-end mt-3" th:if="${!form.computed}">
-				    <button type="submit"
-				            class="btn btn-primary">
-				        Compute Suggested Order
-				    </button>
+				<div class="d-flex justify-content-between align-items-center mb-3">
+				    <a class="btn btn-secondary mt-2" th:href="@{/customerinventory}" th:text="'Go Back'"></a>
+					<div class="text-end mt-2" th:if="${!form.computed}">
+					    <button type="submit"
+					            class="btn btn-primary">
+					        Compute Suggested Order
+					    </button>
+					</div>
+			        <!-- SUBMIT BUTTON -->
+			        <div class="text-end mt-2" th:if="${!form.readOnly && form.computed}">
+			            <button class="btn btn-primary px-4" type="submit">Submit Inventory</button>
+			        </div>
 				</div>
-		        <!-- SUBMIT BUTTON -->
-		        <div class="text-end mt-4" th:if="${!form.readOnly && form.computed}">
-		            <button class="btn btn-primary px-4" type="submit">Submit Inventory</button>
-		        </div>
 		
 		    </form>
 		    <!-- FORM END -->

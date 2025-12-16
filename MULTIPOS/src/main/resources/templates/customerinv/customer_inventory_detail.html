@@ -11,10 +11,11 @@
 			<h4>Inventory Visit Details</h4>
 
 			<div class="mb-3">
-			    <strong>Customer:</strong> <span th:text="${customer.customerName}"></span><br>
-			    <strong>Agent:</strong> <span th:text="${agent.agentCode}"></span><br>
-			    <strong>Visit Date:</strong>
-			    <span th:text="${#temporals.format(form.visitDate, 'MMMM dd, yyyy')}"></span>
+			    <strong>Customer: </strong> <span th:text="${customer.customerName}"></span><br>
+			    <strong>Agent: </strong> <span th:text="${agent.agentCode}"></span><br>
+			    <strong>Visit Date: </strong>
+			    <span th:text="${#temporals.format(form.visitDate, 'MMMM dd, yyyy')}"></span><br>
+			    <strong>Frequency: </strong><span th:text="${form.frequency}"></span>
 			</div>
 
 			<div class="table-responsive" style="max-height:calc(100vh - 320px); overflow-y:auto;">
@@ -27,20 +28,24 @@
 				        <th>Delivery Date</th>
 				        <th>Ending</th>
 				        <th>Suggested</th>
+				        <th>Final</th>
 				    </tr>
 				    </thead>
 				    <tbody>
 				    <tr th:each="i : ${form.items}">
 				        <td>
-				            <strong th:text="${i.productName}"></strong><br>
-				            <small th:text="${i.productCode}"></small>
+				            <strong th:text="${i.productCode}"></strong><br>
+				            <small th:text="${i.productName} + ' - 1/' + ${i.count}"></small>
 				        </td>
 				        <td><span th:text="${i.beginningCase}"></span> / <span th:text="${i.beginningPiece}"></span></td>
 				        <td th:text="${i.deliveryCase} + ' / ' + ${i.deliveryPiece}"></td>
 				        <td th:text="${#temporals.format(i.deliveryDate, 'MM/dd/yyyy')}"></td>
 				        <td th:text="${i.endingCase} + ' / ' + ${i.endingPiece}"></td>
-				        <td class="fw-bold text-primary"
+				        <td class="fw-bold text-info"
 				            th:text="${i.suggestedCase} + ' / ' + ${i.suggestedPiece}">
+				        </td>
+				        <td class="fw-bold text-primary"
+				            th:text="${i.finalCase} + ' / ' + ${i.finalPiece}">
 				        </td>
 				    </tr>
 				    </tbody>

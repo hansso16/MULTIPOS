@@ -94,13 +94,13 @@
 				<span class="" th:text="'Total Records Found: ' + ${totalRows}"></span >
 				<ul class="pagination justify-content-center">
 					<li class="page-item" th:classappend="${currentPage+1 == 1? 'disabled':''}">
-						<a class="page-link"  th:href="@{${contextPath} + (page=${currentPage}, ${searchName}=${searchValue})}" th:text="Previous">Previous</a>
+						<a class="page-link"  th:href="@{${contextPath}(page=${currentPage}, ${searchName}=${searchValue})}" th:text="Previous">Previous</a>
 					</li>
 					<li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage+1 == pageNumber? 'active' : ''}">
 						<a class="page-link" href="#" th:href="@{${contextPath}(page=${pageNumber}, ${searchName}=${searchValue})}" th:text="${pageNumber}">0</a>
 					</li>
 					<li class="page-item" th:classappend="${currentPage+1 == totalPages? 'disabled':''}">
-						<a class="page-link"  th:href="@{${contextPath} + (page=${currentPage+2}, ${searchName}=${searchValue})}" th:text="Next">Next</a>
+						<a class="page-link"  th:href="@{${contextPath}(page=${currentPage+2}, ${searchName}=${searchValue})}" th:text="Next">Next</a>
 					</li>
 				</ul>
 			</nav>

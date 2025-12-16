@@ -31,8 +31,19 @@ public class Product implements Serializable {
 	@Column(name="PRODUCT_CODE", nullable=false, length=10)
 	private String productCode;
 	
+	@Column(name="count")
+	private Integer count;
+	
 	@ManyToMany(mappedBy = "productSet")
     private Set<Customer> customerSet;
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
 
 	public int getProductId() {
 		return productId;
@@ -69,7 +80,7 @@ public class Product implements Serializable {
 	@Override
 	public String toString() {
 		return "Product [productId=" + productId + ", productDescription=" + productDescription + ", productCode="
-				+ productCode + "]";
+				+ productCode + ", count=" + count + ", customerSet=" + customerSet + "]";
 	}
 
 	@Override

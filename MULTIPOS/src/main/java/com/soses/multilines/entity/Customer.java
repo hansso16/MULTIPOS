@@ -38,6 +38,9 @@ public class Customer implements Serializable {
 	@Column(name="CUSTOMER_CODE", nullable=false, length=10)
 	private String customerCode;
 	
+	@Column(name="FREQUENCY")
+	private Integer frequency = 14;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "customer_product",
@@ -50,6 +53,21 @@ public class Customer implements Serializable {
     private Set<Agent> agentSet;
 
 	public Customer() {
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [customerId=" + customerId + ", customerName=" + customerName + ", customerCode="
+				+ customerCode + ", frequency=" + frequency + ", productSet=" + productSet + ", agentSet=" + agentSet
+				+ "]";
+	}
+
+	public Integer getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(Integer frequency) {
+		this.frequency = frequency;
 	}
 
 	public int getCustomerId() {

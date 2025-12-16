@@ -139,6 +139,7 @@ public class CustomerInventoryService {
     		dto.setProductId(p.getProductId());
     		dto.setProductCode(p.getProductCode());
     		dto.setProductName(p.getProductDescription());
+    		dto.setCount(p.getCount());
     		prevOpt.ifPresent(prev -> { 
     			 dto.setBeginningCase(prev.getEndingCase());
     			 dto.setBeginningPiece(prev.getEndingPiece());
@@ -184,6 +185,8 @@ public class CustomerInventoryService {
             dto.setFinalCase(ci.getFinalCase());
             dto.setFinalPiece(ci.getFinalPiece());
             
+            dto.setCount(ci.getProduct().getCount());
+            
             computeSuggestedOrder(ci, dto, visitDate);
 
             // flag for read-only UI
@@ -210,10 +213,8 @@ public class CustomerInventoryService {
     	int endingCase = ci.getEndingCase() == null? 0 : ci.getEndingCase();
     	int endingPiece = ci.getEndingPiece() == null? 0 : ci.getEndingPiece();
     	
-    	//Integer count = ci.getProduct().getCount();
-    	//Integer frequency = ci.getCustomer().getFrequency();
-    	int count = 1;
-    	int frequency = 14;
+    	Integer count = ci.getProduct().getCount();
+    	Integer frequency = ci.getCustomer().getFrequency();
     	int productFrequency = (int) ChronoUnit.DAYS.between(ci.getDeliveryDate(), visitDate);
     	int requiredDays = productFrequency + (frequency/2);
 
@@ -239,7 +240,7 @@ public class CustomerInventoryService {
         dto.setSuggestedPiece(suggestedPiece);
     }
     
-    private void computeSuggestedOrder(CustomerProductFormDTO ci, LocalDate visitDate) {
+    private void computeSuggestedOrder(CustomerProductFormDTO ci, LocalDate visitDate, Integer frequency) {
     	int beginningCase = ci.getBeginningCase() == null? 0 : ci.getBeginningCase();
     	int beginningPiece = ci.getBeginningPiece() == null? 0 : ci.getBeginningPiece();
     	
@@ -249,10 +250,7 @@ public class CustomerInventoryService {
     	int endingCase = ci.getEndingCase() == null? 0 : ci.getEndingCase();
     	int endingPiece = ci.getEndingPiece() == null? 0 : ci.getEndingPiece();
     	
-    	//Integer count = ci.getProduct().getCount();
-    	//Integer frequency = ci.getCustomer().getFrequency();
-    	int count = 1;
-    	int frequency = 14;
+    	Integer count = ci.getCount();
     	int productFrequency = (int) ChronoUnit.DAYS.between(ci.getDeliveryDate(), visitDate);
     	int requiredDays = productFrequency + (frequency/2);
 
@@ -283,7 +281,7 @@ public class CustomerInventoryService {
     	List<CustomerProductFormDTO> list = form.getItems();
     	form.setComputed(true);
     	for (CustomerProductFormDTO dto : list) {
-            computeSuggestedOrder(dto, form.getVisitDate());
+            computeSuggestedOrder(dto, form.getVisitDate(), form.getFrequency());
             // flag for read-only UI
             dto.setReadOnly(true);
             dto.setBeginningLocked(true);

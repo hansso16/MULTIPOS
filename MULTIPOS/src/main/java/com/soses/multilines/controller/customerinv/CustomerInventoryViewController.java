@@ -76,7 +76,6 @@ public class CustomerInventoryViewController extends BaseSearchController {
         Customer c = customerService.findById(customerId);
         Agent a = agentService.findById(agentId);
         
-        // 2. Check if today's record already exists
         List<CustomerInventory> todayInventory = ciService
                 .getTodayInventory(customerId, agentId, visitDate);
         
@@ -84,6 +83,7 @@ public class CustomerInventoryViewController extends BaseSearchController {
         dto.setCustomerId(customerId);
         dto.setAgentId(agentId);
         dto.setVisitDate(visitDate);
+        dto.setFrequency(c.getFrequency());
 
         dtoList = ciService.convertToReadOnlyDTO(todayInventory, visitDate);
         dto.setItems(dtoList);
