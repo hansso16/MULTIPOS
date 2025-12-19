@@ -63,10 +63,11 @@ public class UserViewDetailsService {
     	UserDetailsDTO dto = new UserDetailsDTO();
     	
     	UserDTO form = new UserDTO();
-    	form.setUserCode(user.getUserCode());
-    	form.setUsername(user.getUserCode());
-    	form.setLastName(user.getUserCode());
-    	form.setFirstName(user.getUserCode());
+    	form.setUserId(user.getUserId());
+    	form.setUserCode(user.getUsername());
+    	form.setUsername(user.getUsername());
+    	form.setLastName(user.getFirstName());
+    	form.setFirstName(user.getLastName());
     	form.setTerminationDate(user.getTerminationDate());
     	form.setUpdateTimestamp(user.getUpdateTimestamp());
     	form.setEntryTimestamp(user.getEntryTimestamp());

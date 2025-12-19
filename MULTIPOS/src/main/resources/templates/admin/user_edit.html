@@ -34,24 +34,27 @@
 		<th:block th:replace="~{template :: menu}"></th:block>
 		<br>
 		<div class="container" >
-			<div th:if="${successMessage != null && !#strings.isEmpty(successMessage)}" class="alert alert-success alert-dismissible fade show" role="alert">
-			  	<span th:text="${successMessage}"></span >
-				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-			</div>
-			<form th:object="${userForm}">
+			<div th:if="${errorMessage}" class="alert alert-danger">
+		        <span th:text="${errorMessage}"></span>
+		    </div>
+			<form th:action="@{/admin/user/{id}/edit(id=${userForm.userId})}"
+			          method="post"
+			          th:object="${userForm}">
+
+		        <input type="hidden" th:field="*{userId}" />
 
 		        <div class="row">
-		
+
 		            <!-- ================= LEFT COLUMN ================= -->
 		            <div class="col-md-5">
-		
-		                <!-- BASIC USER INFO -->
+
+		                <!-- USER INFO -->
 		                <div class="card mb-3">
 		                    <div class="card-header">
 		                        <strong>User Information</strong>
 		                    </div>
 		                    <div class="card-body">
-		
+
 		                        <div class="mb-3">
 		                            <label class="form-label">Username</label>
 		                            <input type="text"
@@ -59,121 +62,150 @@
 		                                   th:field="*{username}"
 		                                   readonly />
 		                        </div>
-		
+
 		                        <div class="mb-3">
 		                            <label class="form-label">First Name</label>
 		                            <input type="text"
 		                                   class="form-control"
-		                                   th:field="*{firstName}"
-		                                   readonly />
+		                                   th:field="*{firstName}" />
 		                        </div>
-		
+
 		                        <div class="mb-3">
 		                            <label class="form-label">Last Name</label>
 		                            <input type="text"
 		                                   class="form-control"
-		                                   th:field="*{lastName}"
-		                                   readonly />
+		                                   th:field="*{lastName}" />
 		                        </div>
-		
-		                        <div class="mb-3">
-		                            <label class="form-label">Status</label>
-		                            <input type="text"
-		                                   class="form-control"
-		                                   th:value="${(terminationDate != null && terminationDate.isBefore(today))? 'INACTIVE' : 'ACTIVE'}"
-		                                   readonly />
-		                        </div>
-		                        <div class="mb-3">
-		                            <label class="form-label">Termination Date</label>
-		                            <input type="text"
-		                                   class="form-control"
-		                                   th:value="${terminationDate}"
-		                                   readonly />
-		                        </div>
-		
+
 		                    </div>
 		                </div>
-		
+
+		                <!-- ACCOUNT STATUS -->
+		                <div class="card mb-3">
+		                    <div class="card-header">
+		                        <strong>Account Status</strong>
+		                    </div>
+		                    <div class="card-body">
+		                        <div class="mb-3">
+		                            <label class="form-label">Termination Date</label>
+		                            <input type="date"
+		                                   class="form-control"
+		                                   th:field="*{terminationDate}" />
+		                        </div>
+
+		                    </div>
+		                </div>
+
+		                <!-- PASSWORD CHANGE -->
+		                <div class="card mb-3">
+		                    <div class="card-header">
+		                        <strong>Change Password (Optional)</strong>
+		                    </div>
+		                    <div class="card-body">
+
+		                        <div class="mb-3">
+		                            <label class="form-label">New Password</label>
+		                            <input type="password"
+		                                   class="form-control"
+		                                   th:field="*{newPassword}" />
+		                        </div>
+
+		                        <div class="mb-3">
+		                            <label class="form-label">Confirm Password</label>
+		                            <input type="password"
+		                                   class="form-control"
+		                                   th:field="*{confirmPassword}" />
+		                        </div>
+
+		                    </div>
+		                </div>
+
 		                <!-- ROLES -->
 		                <div class="card">
 		                    <div class="card-header">
 		                        <strong>Roles</strong>
 		                    </div>
 		                    <div class="card-body role-container">
-		
+
 		                        <div th:each="r : ${roles}" class="form-check mb-2">
 		                            <input class="form-check-input"
 		                                   type="checkbox"
-		                                   th:checked="${r.assigned}"
-		                                   disabled />
+		                                   th:id="'role_' + ${r.roleId}"
+		                                   th:value="${r.roleId}"
+										   th:checked="${r.assigned}"
+		                                   th:field="*{roleIds}" />
+
 		                            <label class="form-check-label"
+		                                   th:for="'role_' + ${r.roleId}"
 		                                   th:text="${r.roleDescription}">
 		                            </label>
 		                        </div>
-		
+
 		                    </div>
 		                </div>
-		
+
 		            </div>
-		
+
 		            <!-- ================= RIGHT COLUMN ================= -->
 		            <div class="col-md-7">
-		
+
 		                <div class="card">
 		                    <div class="card-header">
-		                        <strong>Access Control</strong>
+		                        <strong>Privileges</strong>
 		                    </div>
-		
+
 		                    <div class="card-body privilege-container">
-		
+
 		                        <div th:each="entry : ${privilegeMap}" class="mb-3">
-		
+
 		                            <div class="fw-bold mb-2"
 		                                 th:text="${entry.key}">
-		                                MODULE
 		                            </div>
-		
+
 		                            <div class="d-flex flex-wrap">
-		
+
 		                                <div class="col-6 mb-2"
 		                                     th:each="p : ${entry.value}">
-		
+
 		                                    <div class="form-check">
 		                                        <input class="form-check-input"
 		                                               type="checkbox"
-		                                               th:checked="${p.assigned}"
-		                                               disabled />
-		
+		                                               th:id="'priv_' + ${p.privilegeId}"
+		                                               th:value="${p.privilegeId}"
+													   th:field="*{privilegeIds}"
+													   th:checked="${p.assigned}" />
+
 		                                        <label class="form-check-label"
+		                                               th:for="'priv_' + ${p.privilegeId}"
 		                                               th:text="${p.privilegeDescription}">
 		                                        </label>
 		                                    </div>
-		
+
 		                                </div>
-		
+
 		                            </div>
 		                        </div>
-		
+
 		                    </div>
 		                </div>
-		
+
 		            </div>
-		
+
 		        </div>
-		
+
 		        <!-- ACTION BUTTONS -->
 		        <div class="mt-4">
-		            <a th:href="@{/admin/user/{userId}/edit(userId=${userForm.userId})}"
-		               class="btn btn-primary">
-		                Edit
-		            </a>
-		
-		            <a th:href="@{/admin/user}"
+		            <button type="submit" class="btn btn-primary">
+		                Save Changes
+		            </button>
+
+		            <a th:href="@{/admin/user/{id}(id=${userForm.userId})}"
 		               class="btn btn-secondary ms-2">
-		                Back
+		                Cancel
 		            </a>
 		        </div>
-	        </form>
+
+		    </form>
 		</div>
 		<th:block th:replace="~{template :: footer}"></th:block >
 		<th:block th:replace="~{template :: scripts}"></th:block>
