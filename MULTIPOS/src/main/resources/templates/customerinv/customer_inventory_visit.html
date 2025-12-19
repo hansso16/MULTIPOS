@@ -84,12 +84,12 @@
 			                                       customerId=${v.customerId},
 			                                       agentId=${v.agentId},
 			                                       visitDate=${v.visitDate}
-			                                   )}">
+			                                   )}" sec:authorize="hasAuthority('VIEW_CI_DETAIL')">
 			                                    View
 			                                </a>
 
-											<form th:action="@{/customer/inventory/visit/delete}" method="post"
-											      onsubmit="return confirm('Delete this visit?');">
+											<form th:action="@{/customer/inventory/visit/delete}" method="post" sec
+											      onsubmit="return confirm('Delete this visit?');" sec:authorize="hasAuthority('DELETE_CI_DETAIL')">
 											    <input type="hidden" name="agentId" th:value="${v.agentId}">
 											    <input type="hidden" name="customerId" th:value="${v.customerId}">
 											    <input type="hidden" name="visitDate" th:value="${v.visitDate}">

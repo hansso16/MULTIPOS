@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.soses.multilines.api.customer.BaseCustomerResponse;
@@ -55,6 +56,7 @@ public class CustomerService {
 		return response;
 	}
 	
+	@PreAuthorize("hasAuthority('VIEW_AC_ASSIGN')")
 	public CustomerProductResponse getProductsForCustomer(String customerId) {
 		
 		log.info("ENTER: getProductsForCustomer(customerId)");
@@ -78,6 +80,7 @@ public class CustomerService {
 		return res;
 	}
 	
+	@PreAuthorize("hasAuthority('SAVE_AC_ASSIGN')")
 	public void updateCustomerProducts(Integer customerId, List<Integer> productIdList) {
 		
 		customerProductRepo.deleteByCustomerId(customerId);

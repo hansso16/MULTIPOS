@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.soses.multilines.api.agent.AgentCustomerResponse;
@@ -56,6 +57,7 @@ public class AgentService {
 		return response;
 	}
 	
+	@PreAuthorize("hasAnyAuthority('VIEW_AC_ASSIGN')")
 	public AgentCustomerResponse getCustomerForAgent(String agentId) {
 		
 		log.info("ENTER: getCustomerForAgent(agentId)");
@@ -79,6 +81,7 @@ public class AgentService {
 		return res;
 	}
 	
+	@PreAuthorize("hasAuthority('SAVE_AC_ASSIGN')")
 	public void updateAgentCustomers(Integer agentId, List<Integer> customerIdList) {
 		
 		agentCustomerRepo.deleteByAgentId(agentId);

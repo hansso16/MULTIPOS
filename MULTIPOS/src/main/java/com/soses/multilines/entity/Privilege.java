@@ -44,9 +44,6 @@ public class Privilege implements Serializable, Comparable<Privilege> {
 	@Column(name="PRIVILEGE_MODULE", nullable=false, length=15)
 	private String privilegeModule;
 
-	@Column(name="PRIVILEGE_SHORT_NAME", nullable=false, length=20)
-	private String shortName;
-
 	@Temporal(TemporalType.DATE)
 	@Column(name="START_DATE")
 	private LocalDate startLocalDate;
@@ -96,17 +93,6 @@ public class Privilege implements Serializable, Comparable<Privilege> {
 		this.privilegeName = privilegeName;
 	}
 
-
-	public String getShortName() {
-		return shortName;
-	}
-
-
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
-	}
-
-
 	public LocalDate getStartLocalDate() {
 		return startLocalDate;
 	}
@@ -134,7 +120,7 @@ public class Privilege implements Serializable, Comparable<Privilege> {
 
 	@Override
 	public int compareTo(Privilege o) {
-		return this.shortName.compareToIgnoreCase(o.shortName);
+		// TODO Auto-generated method stub
+		return 0;
 	}
-
 }

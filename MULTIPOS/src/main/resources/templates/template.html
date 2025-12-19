@@ -21,27 +21,26 @@
 			    	
 				    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 				     	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					     	<li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+					     	<li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_AGENT')">
 					         	<a class="nav-link active" href="#" th:href="@{/customerinventory}" id="formLink" role="button">
 					            	FORM
 					         	</a>
 					        </li>
-					        <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+					        <li class="nav-item dropdown" sec:authorize="hasAuthority('AGENT')">
 					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					            	Agent
 					         	</a>
-					  			<ul class="dropdown-menu" aria-labelledby="agentDropdown">
+					  			<ul class="dropdown-menu" aria-labelledby="agentDropdown" sec:authorize="hasAuthority('VIEW_AC_ASSIGN')">
 						            <li><a class="dropdown-item" href="#" th:href="@{/agent/customer}">Customer Assignment</a></li>
 					        	</ul>
 					        </li>
-					        <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+					        <li class="nav-item dropdown" sec:authorize="hasAuthority('CUSTOMER')">
 					         	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					            	Customer
 					         	</a>
 					  			<ul class="dropdown-menu" aria-labelledby="agentDropdown">
-						            <li><a class="dropdown-item" href="#" th:href="@{/customer}">Customer</a></li>
-						            <li><a class="dropdown-item" href="#" th:href="@{/customer/product}">Product Assignment</a></li>
-									<li><a class="dropdown-item" href="#" th:href="@{/customer/inventory}">Customer Inventory Visits</a></li>
+						            <li sec:authorize="hasAuthority('VIEW_CP_ASSIGN')"><a class="dropdown-item" href="#" th:href="@{/customer/product}">Product Assignment</a></li>
+									<li sec:authorize="hasAnyAuthority('VIEW_CI_DETAIL', 'DELETE_CI_DETAIL')"><a class="dropdown-item" href="#" th:href="@{/customer/inventory}">Customer Inventory Visits</a></li>
 					        	</ul>
 					        </li>
 					        <!-- 

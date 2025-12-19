@@ -65,11 +65,11 @@
 		        <!-- MIDDLE BUTTONS -->
 		        <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
 		
-		            <button class="btn btn-primary mb-2 w-75" id="btnAssign">
+		            <button class="btn btn-primary mb-2 w-75" id="btnAssign" sec:authorize="hasAuthority('SAVE_AC_ASSIGN')">
 		                Assign &raquo;
 		            </button>
 		
-		            <button class="btn btn-secondary w-75" id="btnRemove">
+		            <button class="btn btn-secondary w-75" id="btnRemove" sec:authorize="hasAuthority('SAVE_AC_ASSIGN')">
 		                &laquo; Remove
 		            </button>
 		
@@ -97,7 +97,7 @@
 		    </div>
 		
 		    <!-- Save Button -->
-		    <div class="text-end mt-4">
+		    <div class="text-end mt-4" sec:authorize="hasAuthority('SAVE_AC_ASSIGN')">
 		        <button class="btn btn-success px-4" id="saveChangesBtn">Save Changes</button>
 		    </div>
 		

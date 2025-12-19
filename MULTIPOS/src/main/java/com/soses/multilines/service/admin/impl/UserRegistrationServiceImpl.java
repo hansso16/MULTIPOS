@@ -23,9 +23,11 @@ import com.soses.multilines.common.ErrorConstants;
 import com.soses.multilines.common.GeneralUtil;
 import com.soses.multilines.common.MessageConstants;
 import com.soses.multilines.dto.PrivilegeViewDTO;
+import com.soses.multilines.entity.Agent;
 import com.soses.multilines.entity.Privilege;
 import com.soses.multilines.entity.Role;
 import com.soses.multilines.entity.User;
+import com.soses.multilines.repository.AgentRepository;
 import com.soses.multilines.repository.PrivilegeRepository;
 import com.soses.multilines.repository.RoleRepository;
 import com.soses.multilines.repository.UserRepository;
@@ -51,14 +53,17 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    private AgentRepository agentRepository;
 	    
 	public UserRegistrationServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-			PrivilegeRepository privilegeRepository, PasswordEncoder passwordEncoder) {
+			PrivilegeRepository privilegeRepository, PasswordEncoder passwordEncoder, AgentRepository agentRepository) {
 		super();
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.privilegeRepository = privilegeRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.agentRepository = agentRepository;
 	}
 
 	@Override
@@ -83,7 +88,18 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
         user.setEntryTimestamp(LocalDateTime.now());
         user.setRoleSet(roles);
         user.setPrivilegeSet(privileges);
-        userRepository.save(user);
+        user = userRepository.save(user);
+        
+        boolean isAgent = roles.stream().anyMatch(r -> "ROLE_AGENT".equals(r.getRoleName()));
+        if (isAgent) {
+        	Agent agent = new Agent();
+        	agent.setUser(user);
+        	agent.setUserId(user.getUserId());
+        	agent.setAgentCode(user.getUserCode());
+        	agent.setActive(true);
+        	agentRepository.save(agent);
+        }
+        
         response.setResponseMessage(MessageConstants.MESSAGE_USER_SAVED + request.getUsername());
         
         return response;

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.soses.multilines.api.customerinv.CustomerInventoryVisitRequest;
@@ -77,6 +78,7 @@ public class CustomerInventoryViewService {
      * HARD DELETE – entire visit
      */
     @Transactional
+    @PreAuthorize("hasAuthority('DELETE_CI_DETAIL')")
     public void deleteInventoryVisit(
             Integer customerId,
             Integer agentId,

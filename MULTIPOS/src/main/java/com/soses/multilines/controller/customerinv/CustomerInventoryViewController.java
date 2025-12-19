@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,6 +66,7 @@ public class CustomerInventoryViewController extends BaseSearchController {
     }
 	
 	@GetMapping("/customer/inventory/{customerId}/{agentId}/{visitDate}")
+	@PreAuthorize("hasAuthority('VIEW_CI_DETAIL')")
 	public String viewVisitDetails(@PathVariable Integer customerId, 
 			@PathVariable Integer agentId, 
 			@PathVariable LocalDate visitDate,
