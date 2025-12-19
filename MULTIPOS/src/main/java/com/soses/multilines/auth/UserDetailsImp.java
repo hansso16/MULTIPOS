@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.collection.spi.PersistentSet;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,13 +57,7 @@ public class UserDetailsImp implements UserDetails {
 		this.password = user.getPassword();
 		this.terminationDate = user.getTerminationDate();
 		this.roleSet = user.getRoleSet();
-		if (!roleSet.isEmpty()) {
-			for (Role r : roleSet) {
-				privilegeSet = r.getPrivilegeSet();
-			}
-		} else {
-			privilegeSet = new PersistentSet<>();
-		}
+		this.privilegeSet = user.getPrivilegeSet();
 		if(terminationDate != null && terminationDate.isBefore(java.time.LocalDate.now())) {
 			this.isEnabled = false;
 		} else { 
@@ -85,20 +78,14 @@ public class UserDetailsImp implements UserDetails {
 		
 		if (!roleSet.isEmpty()) {
 			for (Role role : roleSet) {
-				if ((LocalDate.now().isAfter(role.getStartLocalDate()) || LocalDate.now().isEqual(role.getStartLocalDate()))
-						&& (LocalDate.now().isBefore(role.getEndLocalDate()) || LocalDate.now().isEqual(role.getEndLocalDate()))) {
-					authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-				}
+				authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
 			}
 		}
 		
 		if (!privilegeSet.isEmpty()) {
 			for (Privilege privilege : privilegeSet) {
-				if ((LocalDate.now().isAfter(privilege.getStartLocalDate()) || LocalDate.now().isEqual(privilege.getStartLocalDate()))
-						&& LocalDate.now().isBefore(privilege.getEndLocalDate()) || LocalDate.now().isEqual(privilege.getEndLocalDate())) {
-					authorities.add(new SimpleGrantedAuthority(privilege.getPrivilegeName()));
-					moduleSet.add(privilege.getPrivilegeModule());
-				}
+				authorities.add(new SimpleGrantedAuthority(privilege.getPrivilegeName()));
+				moduleSet.add(privilege.getPrivilegeModule());
 			}
 		}
 		

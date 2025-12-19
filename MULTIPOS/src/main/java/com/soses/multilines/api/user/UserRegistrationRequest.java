@@ -80,7 +80,7 @@ public class UserRegistrationRequest extends BaseRequest {
 	public String toString() {
 		return "UserRegistrationRequest [username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", password=" + password + ", passwordConfirmation=" + passwordConfirmation + ", roleIds=" + roleIds
-				+ ", privilegeIds=" + privilegeIds + ", toString()=" + super.toString() + "]";
+				+ ", privilegeIds=" + privilegeIds + "]";
 	}
 
 	

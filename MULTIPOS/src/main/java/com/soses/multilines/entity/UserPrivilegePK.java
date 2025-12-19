@@ -1,13 +1,10 @@
 package com.soses.multilines.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 /**
  * The primary key class for the user_privilege database table.
@@ -23,10 +20,6 @@ public class UserPrivilegePK implements Serializable {
 
 	@Column(name="PRIVILEGE_ID", unique=true, nullable=false)
 	private int privilegeId;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="ASSIGNED_TIMESTAMP", unique=true, nullable=false)
-	private LocalDateTime assignedTimestamp;
 	
 	public UserPrivilegePK() {
 	}
@@ -44,13 +37,6 @@ public class UserPrivilegePK implements Serializable {
 		this.privilegeId = privilegeId;
 	}
 
-	public LocalDateTime getAssignedTimestamp() {
-		return assignedTimestamp;
-	}
-
-	public void setAssignedTimestamp(LocalDateTime assignedTimestamp) {
-		this.assignedTimestamp = assignedTimestamp;
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -61,12 +47,11 @@ public class UserPrivilegePK implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		UserPrivilegePK other = (UserPrivilegePK) obj;
-		return Objects.equals(assignedTimestamp, other.assignedTimestamp) && privilegeId == other.privilegeId
-				&& userId == other.userId;
+		return privilegeId == other.privilegeId && userId == other.userId;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(assignedTimestamp, privilegeId, userId);
+		return Objects.hash(privilegeId, userId);
 	}
 }

@@ -41,7 +41,7 @@ public class UserSearchServiceImpl implements UserSearchService<User> {
 
 		if (request != null) {
 			userSearchReq = (UserSearchRequest) request;
-			username = userSearchReq.getUsername();
+			username = userSearchReq.getSearch();
 			
 			if (!StringUtil.isNullOrEmpty(userSearchReq.getSize())) {
 				pageSize = Integer.parseInt(userSearchReq.getSize());
@@ -51,11 +51,7 @@ public class UserSearchServiceImpl implements UserSearchService<User> {
 			}
 			
 			Pageable page = PageRequest.of(currentPage, pageSize);
-			if (!StringUtil.isNullOrEmpty(username)) {
-				userPage = userRepo.findByUsernameContains(username, page);
-			} else {
-				userPage = userRepo.findAll(page);
-			}
+			userPage = userRepo.searchByUsername(username, page);
 		}
 		
 		return userPage;

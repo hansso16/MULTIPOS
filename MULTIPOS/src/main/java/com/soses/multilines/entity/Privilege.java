@@ -52,7 +52,7 @@ public class Privilege implements Serializable, Comparable<Privilege> {
 	private LocalDate startLocalDate;
 	
 	@ManyToMany(mappedBy = "privilegeSet")
-    private Set<Role> roles;
+    private Set<User> users;
 	
 	public Privilege() {
 	}
@@ -116,14 +116,12 @@ public class Privilege implements Serializable, Comparable<Privilege> {
 		this.startLocalDate = startLocalDate;
 	}
 
-
-	public Set<Role> getRoles() {
-		return roles;
+	public Set<User> getUsers() {
+		return users;
 	}
 
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 	public String getPrivilegeModule() {

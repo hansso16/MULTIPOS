@@ -64,13 +64,21 @@ public class User implements Serializable {
 	@Column(name="FIRST_NAME", length=50)
 	private String firstName;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 	        name = "user_role",
 	        joinColumns = @JoinColumn(name = "user_id"),
 	        inverseJoinColumns = @JoinColumn(name = "role_id")
 	    )
     private Set<Role> roleSet= new HashSet<>();
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "user_privilege",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "privilege_id")
+			)
+	private Set<Privilege> privilegeSet= new HashSet<>();
 	
 
 	public User() {
@@ -140,13 +148,13 @@ public class User implements Serializable {
 		this.roleSet = roleSet;
 	}
 
-//	public Set<Privilege> getPrivileges() {
-//		return privileges;
-//	}
-//
-//	public void setPrivileges(Set<Privilege> privileges) {
-//		this.privileges = privileges;
-//	}
+	public Set<Privilege> getPrivilegeSet() {
+		return privilegeSet;
+	}
+
+	public void setPrivilegeSet(Set<Privilege> privilegeSet) {
+		this.privilegeSet = privilegeSet;
+	}
 
 	public String getLastName() {
 		return lastName;
@@ -169,7 +177,7 @@ public class User implements Serializable {
 		return "User [userId=" + userId + ", entryTimestamp=" + entryTimestamp + ", password=" + password
 				+ ", terminationDate=" + terminationDate + ", updateTimestamp=" + updateTimestamp + ", userCode="
 				+ userCode + ", username=" + username + ", lastName=" + lastName + ", firstName=" + firstName
-				+ ", roleSet=" + roleSet + "]";
+				+ ", roleSet=" + roleSet + ", privilegeSet=" + privilegeSet + "]";
 	}
 
 }

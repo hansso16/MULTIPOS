@@ -15,8 +15,8 @@ public class UserRolePK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="USER_CODE", unique=true, nullable=false)
-	private int userCode;
+	@Column(name="USER_ID", unique=true, nullable=false)
+	private int userId;
 
 	@Column(name="ROLE_ID", unique=true, nullable=false)
 	private int roleId;
@@ -24,13 +24,15 @@ public class UserRolePK implements Serializable {
 	public UserRolePK() {
 	}
 
-	public int getUserCode() {
-		return userCode;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUserCode(int userCode) {
-		this.userCode = userCode;
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
+
 
 	public int getRoleId() {
 		return roleId;
@@ -42,12 +44,12 @@ public class UserRolePK implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserRolePK [userCode=" + userCode + ", roleId=" + roleId + "]";
+		return "UserRolePK [userId=" + userId + ", roleId=" + roleId + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(roleId, userCode);
+		return Objects.hash(roleId, userId);
 	}
 
 	@Override
@@ -59,7 +61,7 @@ public class UserRolePK implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		UserRolePK other = (UserRolePK) obj;
-		return roleId == other.roleId && userCode == other.userCode;
+		return roleId == other.roleId && userId == other.userId;
 	}
 
 	

@@ -25,13 +25,13 @@ public class UserPrivilege implements Serializable {
 	@EmbeddedId
 	private UserPrivilegePK id;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="END_DATE")
-	private LocalDate endDate;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="START_DATE")
-	private LocalDate startDate;
+//	@Temporal(TemporalType.DATE)
+//	@Column(name="END_DATE")
+//	private LocalDate endDate;
+//
+//	@Temporal(TemporalType.DATE)
+//	@Column(name="START_DATE")
+//	private LocalDate startDate;
 
 	public UserPrivilege() {
 	}
@@ -42,22 +42,6 @@ public class UserPrivilege implements Serializable {
 
 	public void setId(UserPrivilegePK id) {
 		this.id = id;
-	}
-
-	public LocalDate getEndDate() {
-		return this.endDate;
-	}
-
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
-
-	public LocalDate getStartDate() {
-		return this.startDate;
-	}
-
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
 	}
 
 }

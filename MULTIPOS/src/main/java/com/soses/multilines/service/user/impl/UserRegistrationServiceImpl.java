@@ -1,7 +1,11 @@
 package com.soses.multilines.service.user.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -11,11 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.soses.multilines.api.user.UserRegistrationFormResponse;
 import com.soses.multilines.api.user.UserRegistrationRequest;
 import com.soses.multilines.api.user.UserRegistrationResponse;
 import com.soses.multilines.common.ErrorConstants;
 import com.soses.multilines.common.GeneralUtil;
 import com.soses.multilines.common.MessageConstants;
+import com.soses.multilines.dto.PrivilegeViewDTO;
 import com.soses.multilines.entity.Privilege;
 import com.soses.multilines.entity.Role;
 import com.soses.multilines.entity.User;
@@ -67,13 +73,14 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
         Set<Privilege> privileges = new HashSet<>(privilegeRepository.findAllById(request.getPrivilegeIds()));
         
         User user = new User();
-        user.setUserCode(request.getUserCode());
+        user.setUserCode(request.getUsername());
         user.setUsername(request.getUsername());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPassword(passwordEncoder.encode(request.getPassword())); // Encrypt the password
+        user.setEntryTimestamp(LocalDateTime.now());
         user.setRoleSet(roles);
-        //user.setPrivileges(privileges);
+        user.setPrivilegeSet(privileges);
         userRepository.save(user);
         response.setResponseMessage(MessageConstants.MESSAGE_USER_SAVED + request.getUsername());
         
@@ -85,6 +92,12 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
         Optional<User> existingUser = userRepository.findByUsername(request.getUsername());
         if (existingUser.isPresent()) {
             response.setErrorMessage("Username is already taken.");
+            return false;
+        }
+        
+        // Check Password
+        if (!request.getPassword().equals(request.getPasswordConfirmation())) {
+            response.setErrorMessage("Passwords do not match.");
             return false;
         }
 
@@ -114,4 +127,37 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
         
         return true;
     }
+
+	@Override
+	public UserRegistrationFormResponse getUserRegistrationData() {
+		
+		UserRegistrationFormResponse response = new UserRegistrationFormResponse();
+		
+		List<Privilege> privileges = privilegeRepository.findAllActive();
+		Map<String, List<PrivilegeViewDTO>> privilegeMap = new LinkedHashMap<>();
+	    for (Privilege p : privileges) {
+	        privilegeMap
+	            .computeIfAbsent(p.getPrivilegeModule(), k -> new ArrayList<>())
+	            .add(toPrivilegeView(p));
+	    }
+	    
+	    List<Role> roleList = roleRepository.findAvailableRole();
+	    response.setRoleList(roleList);
+
+	    response.setPrivilegeByModule(privilegeMap);
+	    response.setRequest(new UserRegistrationRequest());
+		
+	    return response;
+	}
+	
+	private PrivilegeViewDTO toPrivilegeView(Privilege p) {
+
+		PrivilegeViewDTO pv = new PrivilegeViewDTO();
+	    pv.setPrivilegeId(p.getPrivilegeId());
+	    pv.setPrivilegeName(p.getPrivilegeName());
+	    pv.setPrivilegeDescription(p.getPrivilegeDescription());
+	    pv.setPrivilegeModule(p.getPrivilegeModule());
+
+	    return pv;
+	}
 }

@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{template :: headfiles}"></th:block>
+		<title>Register User</title>
+		<style>
+			.privilege-container {
+			    min-height: 650px;   /* adjust as needed */
+			    max-height: 650px;   /* adjust as needed */
+			    overflow-y: auto;
+				overflow-x: hidden;
+			    padding-right: 10px; /* prevents scrollbar overlap */
+			}
+		</style>
+	</head>
+	<body>
+		<th:block th:replace="~{template :: menu}"></th:block >
+		<br>
+		<div class="container">
+			<div th:if="${errorMessage != null && !#strings.isEmpty(errorMessage)}" class="alert alert-danger alert-dismissible fade show" role="alert">
+			  	<span th:text="${errorMessage}"></span >
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			<div th:if="${successMessage != null && !#strings.isEmpty(successMessage)}" class="alert alert-success alert-dismissible fade show" role="alert">
+			  	<span th:text="${successMessage}"></span >
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			<form action="#" th:action="@{/admin/user/register}" th:object="${userForm}" method="POST" autocomplete="off" id="userRegistrationForm" onsubmit="return validatePassword();">
+				<div class="row">
+				
+				    <!-- LEFT COLUMN -->
+				    <div class="col-md-5">
+				
+				        <h4>User Details</h4>
+				
+				        <div class="mb-3">
+				            <label>Username</label>
+				            <input type="text" class="form-control"
+				                   th:field="*{username}" required />
+				        </div>
+				
+				        <div class="mb-3">
+				            <label>First Name</label>
+				            <input type="text" class="form-control"
+				                   th:field="*{firstName}" required />
+				        </div>
+				        <div class="mb-3">
+				            <label>Last Name</label>
+				            <input type="text" class="form-control"
+				                   th:field="*{lastName}" required />
+				        </div>
+				        <div class="mb-3">
+				            <label>Password</label>
+				            <input type="password" class="form-control"
+				                   th:field="*{password}" required />
+				        </div>
+				        <div class="mb-3">
+				            <label>Confirm Password</label>
+				            <input type="password" class="form-control"
+				                   th:field="*{passwordConfirmation}" required />
+				        </div>
+				
+				        <div class="mb-3">
+				            <label>Role</label>
+				            <div th:each="r : ${roleList}">
+							    <div class="form-check">
+							        <input class="form-check-input"
+							               type="checkbox"
+							               th:id="'role_' + ${r.roleId}"
+							               th:value="${r.roleId}"
+							               th:field="*{roleIds}" />
+							
+							        <label class="form-check-label" th:for="'role_' + ${r.roleId}"
+							               th:text="${r.roleDescription}">
+							        </label>
+							    </div>
+							</div>
+				        </div>
+				
+				    </div>
+				
+				    <!-- RIGHT COLUMN -->
+				    <div class="col-md-7">
+				        <h4>Access Level</h4>
+						<div class="privilege-container">
+					        <div th:each="entry : ${res.privilegeByModule}" class="mb-3">
+					            <strong th:text="${entry.key}">MODULE</strong>
+					            <div class="row mt-2">
+					                <div class="col-md-6"
+					                     th:each="p : ${entry.value}">
+					                    <div class="form-check">
+					                        <input class="form-check-input"
+					                               type="checkbox"
+					                               th:id="'priv_' + ${p.privilegeId}"
+					                               th:value="${p.privilegeId}"
+					                               th:field="*{privilegeIds}"
+					                                />
+					                        <label class="form-check-label" th:for="'priv_' + ${p.privilegeId}"
+					                               th:text="${p.privilegeDescription}">
+					                        </label>
+					                    </div>
+					                </div>
+					            </div>
+					        </div>
+						</div>
+				    </div>
+				</div>
+				<hr>
+				<input class="btn btn-primary" type="submit" value="Submit">
+				<input class="btn btn-secondary" type="reset" value="Reset">
+			</form >
+		</div>
+		<th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
+		<script th:inline="javascript">
+		
+			//var regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+			function validatePassword() {
+			    var password1 = $('#password').val();
+			    var password2 = $('#passwordConfirmation').val();
+			    $('#passwordError').empty();
+			    if(password1 != password2) {
+					var passwordError = document.getElementById("passwordError");
+					passwordError.innerHTML = "<span style='color: red;'>The password you entered does not match</span>"
+					return false;
+				}
+			}
+		</script >
+	</body>
+</HTML>

@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{template :: headfiles}"></th:block>
+		<title>Search User</title>
+	</head>
+	<body>
+		<th:block th:replace="~{template :: menu}"></th:block>
+		<br>
+		<div class="container" >
+			<div class="d-flex justify-content-center">
+				<form class="d-inline-flex" action="#" th:action="@{/admin/user}" method="GET" >
+					<div class="input-group">
+			      		<div class="form-outline">
+			      			<input class="form-control rounded" type="search" placeholder="Search by Username" 
+			      				name="search" th:value="${search}" aria-label="Search" autocomplete="off" >
+			      		</div>
+			      		<button class="btn btn-outline-primary" type="submit">Search</button >
+			      	</div>
+		      	</form>
+			</div>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th scope="col">USERNAME</th >
+						<th scope="col">FULL NAME</th >
+						<th scope="col">STATUS</th >
+						<!--<th scope="col">Action</th >-->
+					</tr>
+				</thead>
+				<tbody th:if="${page != null}">
+					<tr th:each="user : ${page.content}">
+						<td><a href="#" th:href="@{/admin/user/}+ ${user.userId}" th:text="${user.username}"></a ></td><!--TODO: link-->
+						<td th:text="${user.lastName + ', ' + user.firstName}"></td>
+						<!--<td th:text="${user.terminationDate != null && user.terminationDate < #temporals.createToday()  ? 'INACTIVE' : 'ACTIVE'}"></td>-->
+						<td th:text="${(user.terminationDate != null && user.terminationDate.isBefore(today))? 'INACTIVE' : 'ACTIVE'}"></td>
+					</tr >
+				</tbody >
+			</table>
+			<th:block th:replace="~{template :: pagination(searchName='username', searchValue=${username})}"></th:block>
+		</div>
+		<th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
+	</body>
+</HTML >

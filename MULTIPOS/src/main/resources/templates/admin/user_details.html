@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{template :: headfiles}"></th:block>
+		<title>User Details</title>
+		<style>
+	        .privilege-container {
+	        	min-height: 650px;
+	            max-height: 650px;
+	            overflow-y: auto;
+	            overflow-x: hidden;
+	            padding: 10px;
+	            border: 1px solid #ddd;
+	            border-radius: 6px;
+	        }
+	
+	        .role-container {
+	            max-height: 180px;
+	            overflow-y: auto;
+	            overflow-x: hidden;
+	            padding: 10px;
+	            border: 1px solid #ddd;
+	            border-radius: 6px;
+	        }
+	
+	        .form-check-label {
+	            white-space: normal;
+	            word-break: break-word;
+	            cursor: default;
+	        }
+        </style>
+	</head>
+	<body>
+		<th:block th:replace="~{template :: menu}"></th:block>
+		<br>
+		<div class="container mt-4" >
+			<form th:object="${userForm}">
+
+		        <div class="row">
+		
+		            <!-- ================= LEFT COLUMN ================= -->
+		            <div class="col-md-5">
+		
+		                <!-- BASIC USER INFO -->
+		                <div class="card mb-3">
+		                    <div class="card-header">
+		                        <strong>User Information</strong>
+		                    </div>
+		                    <div class="card-body">
+		
+		                        <div class="mb-3">
+		                            <label class="form-label">Username</label>
+		                            <input type="text"
+		                                   class="form-control"
+		                                   th:field="*{username}"
+		                                   readonly />
+		                        </div>
+		
+		                        <div class="mb-3">
+		                            <label class="form-label">First Name</label>
+		                            <input type="text"
+		                                   class="form-control"
+		                                   th:field="*{firstName}"
+		                                   readonly />
+		                        </div>
+		
+		                        <div class="mb-3">
+		                            <label class="form-label">Last Name</label>
+		                            <input type="text"
+		                                   class="form-control"
+		                                   th:field="*{lastName}"
+		                                   readonly />
+		                        </div>
+		
+		                        <div class="mb-3">
+		                            <label class="form-label">Status</label>
+		                            <input type="text"
+		                                   class="form-control"
+		                                   th:value="${(terminationDate != null && terminationDate.isBefore(today))? 'INACTIVE' : 'ACTIVE'}"
+		                                   readonly />
+		                        </div>
+		                        <div class="mb-3">
+		                            <label class="form-label">Termination Date</label>
+		                            <input type="text"
+		                                   class="form-control"
+		                                   th:value="${terminationDate}"
+		                                   readonly />
+		                        </div>
+		
+		                    </div>
+		                </div>
+		
+		                <!-- ROLES -->
+		                <div class="card">
+		                    <div class="card-header">
+		                        <strong>Roles</strong>
+		                    </div>
+		                    <div class="card-body role-container">
+		
+		                        <div th:each="r : ${roles}" class="form-check mb-2">
+		                            <input class="form-check-input"
+		                                   type="checkbox"
+		                                   th:checked="${r.assigned}"
+		                                   disabled />
+		                            <label class="form-check-label"
+		                                   th:text="${r.roleDescription}">
+		                            </label>
+		                        </div>
+		
+		                    </div>
+		                </div>
+		
+		            </div>
+		
+		            <!-- ================= RIGHT COLUMN ================= -->
+		            <div class="col-md-7">
+		
+		                <div class="card">
+		                    <div class="card-header">
+		                        <strong>Access Control</strong>
+		                    </div>
+		
+		                    <div class="card-body privilege-container">
+		
+		                        <div th:each="entry : ${privilegeMap}" class="mb-3">
+		
+		                            <div class="fw-bold mb-2"
+		                                 th:text="${entry.key}">
+		                                MODULE
+		                            </div>
+		
+		                            <div class="d-flex flex-wrap">
+		
+		                                <div class="col-6 mb-2"
+		                                     th:each="p : ${entry.value}">
+		
+		                                    <div class="form-check">
+		                                        <input class="form-check-input"
+		                                               type="checkbox"
+		                                               th:checked="${p.assigned}"
+		                                               disabled />
+		
+		                                        <label class="form-check-label"
+		                                               th:text="${p.privilegeDescription}">
+		                                        </label>
+		                                    </div>
+		
+		                                </div>
+		
+		                            </div>
+		                        </div>
+		
+		                    </div>
+		                </div>
+		
+		            </div>
+		
+		        </div>
+		
+		        <!-- ACTION BUTTONS -->
+		        <div class="mt-4">
+		            <a th:href="@{/admin/users/{userId}/edit(id=${userForm.userId})}"
+		               class="btn btn-primary">
+		                Edit
+		            </a>
+		
+		            <a th:href="@{/admin/user}"
+		               class="btn btn-secondary ms-2">
+		                Back
+		            </a>
+		        </div>
+	        </form>
+		</div>
+		<th:block th:replace="~{template :: footer}"></th:block >
+		<th:block th:replace="~{template :: scripts}"></th:block>
+	</body>
+</HTML >

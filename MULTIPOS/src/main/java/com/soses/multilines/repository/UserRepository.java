@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.soses.multilines.entity.User;
@@ -34,6 +35,18 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	 * @return the page
 	 */
 	Page<User> findByUsernameContains(String username, Pageable pageable);
+	
+
+	@Query("""
+	        SELECT u FROM User u
+	        WHERE 
+				(
+					:username IS NULL
+		            OR :username = ''
+		            OR u.username LIKE CONCAT('%', :username, '%')
+				)
+	    """)
+	Page<User> searchByUsername(String username, Pageable pageable);
 	
 //	/**
 //	 * Terminate user.
