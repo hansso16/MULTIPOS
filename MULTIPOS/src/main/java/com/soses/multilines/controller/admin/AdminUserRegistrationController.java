@@ -16,7 +16,7 @@ import com.soses.multilines.api.user.UserRegistrationFormResponse;
 import com.soses.multilines.api.user.UserRegistrationRequest;
 import com.soses.multilines.api.user.UserRegistrationResponse;
 import com.soses.multilines.common.ViewConstants;
-import com.soses.multilines.service.user.UserRegistrationService;
+import com.soses.multilines.service.admin.UserRegistrationService;
 
 import ch.qos.logback.core.util.StringUtil;
 

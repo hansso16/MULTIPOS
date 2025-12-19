@@ -2,13 +2,14 @@ package com.soses.multilines.auth;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.soses.multilines.entity.User;
+import com.soses.multilines.repository.PrivilegeRepository;
+import com.soses.multilines.repository.RoleRepository;
 import com.soses.multilines.repository.UserRepository;
 
 /**
@@ -23,16 +24,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	/** The user repository. */
 	UserRepository userRepository;
 	
+	private PrivilegeRepository privilegeRepository;
+	
+	private RoleRepository roleRepository;
+	
 	/**
 	 * Sets the user repository.
 	 *
 	 * @param userRepository the new user repository
 	 */
-	@Autowired
-	public void setUserRepository(UserRepository userRepository) {
+	public UserDetailsServiceImpl(UserRepository userRepository, PrivilegeRepository privilegeRepository,
+			RoleRepository roleRepository) {
+		super();
 		this.userRepository = userRepository;
+		this.privilegeRepository = privilegeRepository;
+		this.roleRepository = roleRepository;
 	}
-	
+
 	/**
 	 * Load user by username.
 	 *
@@ -48,7 +56,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
 		
-		return new UserDetailsImp(user.get());
+		return new UserDetailsImp(user.get(), roleRepository, privilegeRepository);
 	}
 
 }

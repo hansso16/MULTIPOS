@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.soses.multilines.entity.Privilege;
 import com.soses.multilines.entity.Role;
 import com.soses.multilines.entity.User;
+import com.soses.multilines.repository.PrivilegeRepository;
+import com.soses.multilines.repository.RoleRepository;
 
 /**
  * The Class UserDetailsImp.
@@ -24,6 +26,10 @@ public class UserDetailsImp implements UserDetails {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 7137660071839033186L;
 	
+	private PrivilegeRepository privilegeRepository;
+	
+	private RoleRepository roleRepository;
+
 	/** The username. */
 	private String username;
 	
@@ -46,13 +52,13 @@ public class UserDetailsImp implements UserDetails {
 	 * Instantiates a new user details imp.
 	 */
 	public UserDetailsImp() { }
-	
+
 	/**
 	 * Instantiates a new user details imp.
 	 *
 	 * @param user the user
 	 */
-	public UserDetailsImp(User user) {
+	public UserDetailsImp(User user, RoleRepository roleRepository, PrivilegeRepository privilegeRepository) {
 		this.username = user.getUsername();
 		this.password = user.getPassword();
 		this.terminationDate = user.getTerminationDate();
@@ -63,6 +69,8 @@ public class UserDetailsImp implements UserDetails {
 		} else { 
 			this.isEnabled = true;
 		}
+		this.roleRepository = roleRepository;
+		this.privilegeRepository = privilegeRepository;
 	}
 	
 	/**
@@ -74,8 +82,21 @@ public class UserDetailsImp implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
 		Set<GrantedAuthority> authorities = new HashSet<>();
-		Set<String> moduleSet = new HashSet<>();
 		
+		boolean isAdmin = roleSet.stream().anyMatch(r -> "ROLE_ADMIN".equals(r.getRoleName()));
+		if (isAdmin) {
+			for (Role r : roleRepository.findAll()) {
+				authorities.add(new SimpleGrantedAuthority(r.getRoleName()));
+			}
+			for (Privilege p : privilegeRepository.findAllActive()) {
+				authorities.add(new SimpleGrantedAuthority(p.getPrivilegeName()));
+				authorities.add(new SimpleGrantedAuthority(p.getPrivilegeModule()));
+			}
+			return authorities;
+		}
+		
+		
+		Set<String> moduleSet = new HashSet<>();
 		if (!roleSet.isEmpty()) {
 			for (Role role : roleSet) {
 				authorities.add(new SimpleGrantedAuthority(role.getRoleName()));

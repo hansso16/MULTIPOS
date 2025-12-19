@@ -1,4 +1,4 @@
-package com.soses.multilines.service.user;
+package com.soses.multilines.service.admin;
 
 import com.soses.multilines.api.user.UserRegistrationFormResponse;
 import com.soses.multilines.api.user.UserRegistrationRequest;

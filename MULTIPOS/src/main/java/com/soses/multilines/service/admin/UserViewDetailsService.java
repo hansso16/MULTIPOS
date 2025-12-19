@@ -1,4 +1,4 @@
-package com.soses.multilines.service.user;
+package com.soses.multilines.service.admin;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.soses.multilines.common.MappingUtil;
@@ -30,6 +31,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@PreAuthorize("hasRole('ADMIN')")
 public class UserViewDetailsService {
 
 	private UserRepository userRepository;

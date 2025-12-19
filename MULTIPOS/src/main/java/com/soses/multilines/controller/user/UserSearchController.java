@@ -15,7 +15,7 @@ import com.soses.multilines.common.MessageConstants;
 import com.soses.multilines.common.ViewConstants;
 import com.soses.multilines.controller.BaseSearchController;
 import com.soses.multilines.entity.User;
-import com.soses.multilines.service.user.UserSearchService;
+import com.soses.multilines.service.admin.UserSearchService;
 
 import jakarta.validation.Valid;
 

@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.soses.multilines.api.user.EditUserRequest;
 import com.soses.multilines.dto.EditUserDTO;
-import com.soses.multilines.service.user.UserEditDetailService;
+import com.soses.multilines.service.admin.UserEditDetailService;
 
 @Controller
 @PreAuthorize("hasRole('ADMIN')")

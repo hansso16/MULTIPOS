@@ -1,23 +1,25 @@
-package com.soses.multilines.service.user.impl;
+package com.soses.multilines.service.admin.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.soses.multilines.api.BaseSearchRequest;
 import com.soses.multilines.api.user.UserSearchRequest;
 import com.soses.multilines.entity.User;
 import com.soses.multilines.repository.UserRepository;
-import com.soses.multilines.service.user.UserSearchService;
+import com.soses.multilines.service.admin.UserSearchService;
 
 import ch.qos.logback.core.util.StringUtil;
 import jakarta.transaction.Transactional;
 
 @Service("UserSearchServiceImpl")
 @Transactional
+@PreAuthorize("hasRole('ADMIN')")
 public class UserSearchServiceImpl implements UserSearchService<User> {
 
 	private static final Logger log = LoggerFactory.getLogger(UserSearchServiceImpl.class);

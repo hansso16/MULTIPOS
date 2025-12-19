@@ -1,4 +1,4 @@
-package com.soses.multilines.service.user.impl;
+package com.soses.multilines.service.admin.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +29,13 @@ import com.soses.multilines.entity.User;
 import com.soses.multilines.repository.PrivilegeRepository;
 import com.soses.multilines.repository.RoleRepository;
 import com.soses.multilines.repository.UserRepository;
-import com.soses.multilines.service.user.UserRegistrationService;
+import com.soses.multilines.service.admin.UserRegistrationService;
 
 import jakarta.transaction.Transactional;
 
 @Service("UserRegistrationServiceImpl")
 @Transactional
+@PreAuthorize("hasRole('ADMIN')")
 public class UserRegistrationServiceImpl implements UserRegistrationService {
 
 	private static final Logger log = LoggerFactory.getLogger(UserRegistrationServiceImpl.class);

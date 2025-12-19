@@ -44,6 +44,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 					:username IS NULL
 		            OR :username = ''
 		            OR u.username LIKE CONCAT('%', :username, '%')
+				) AND NOT EXISTS
+				(
+					SELECT r FROM u.roleSet r WHERE r.roleName = 'ROLE_ADMIN'
 				)
 	    """)
 	Page<User> searchByUsername(String username, Pageable pageable);
